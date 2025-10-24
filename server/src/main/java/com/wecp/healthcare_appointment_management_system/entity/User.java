@@ -7,4 +7,5 @@ import java.util.Set;
 @Table(name = "users") // do not change table name
 public class User {
     // implement user entity
+    Integer id;
 }
