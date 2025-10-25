@@ -17,13 +17,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
-
+@RestController
 public class PatientController {
 
-
+@Autowired()
     @GetMapping("/api/patient/doctors")
     public ResponseEntity<List<Doctor>> getDoctors() {
         // get all doctors
+
     }
 
     @PostMapping("/api/patient/appointment")
