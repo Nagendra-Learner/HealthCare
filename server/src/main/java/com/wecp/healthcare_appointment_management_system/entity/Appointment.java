@@ -2,10 +2,12 @@ package com.wecp.healthcare_appointment_management_system.entity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 public class Appointment 
 {   // implement appointment entity
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "appointment_id")
     Long id;
@@ -16,7 +18,7 @@ public class Appointment
     @ManyToOne(cascade = CascadeType.MERGE)
     Doctor doctor;
 
-    LocalDateTime appointmentTime;
+    Date appointmentTime;
     String status;
 
     public Long getId() {
@@ -37,10 +39,10 @@ public class Appointment
     public void setDoctor(Doctor doctor) {
         this.doctor = doctor;
     }
-    public LocalDateTime getAppointmentTime() {
+    public Date getAppointmentTime() {
         return appointmentTime;
     }
-    public void setAppointmentTime(LocalDateTime appointmentTime) {
+    public void setAppointmentTime(Date appointmentTime) {
         this.appointmentTime = appointmentTime;
     }
     public String getStatus() {

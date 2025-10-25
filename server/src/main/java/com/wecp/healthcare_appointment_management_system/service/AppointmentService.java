@@ -7,14 +7,10 @@ import com.wecp.healthcare_appointment_management_system.entity.Patient;
 import com.wecp.healthcare_appointment_management_system.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
-
-import javax.print.Doc;
 
 @Service
 public class AppointmentService 
@@ -38,39 +34,61 @@ public class AppointmentService
         Patient patient = patientRepository.findById(patientId).orElse(null);
         Doctor doctor = doctorRepository.findById(doctorId).orElse(null);
 
-        Appointment appointment = new Appointment();
-        if(patient != null && doctor != null)
+        if(patient == null)
         {
-            appointment.setPatient(patient);
-            appointment.setDoctor(doctor);
-            appointment.setAppointmentTime(timeDto.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
-            appointment.setStatus("Scheduled");
+            throw new RuntimeException("Patient with ID: " + patientId + " not found.");
+        }
+        if(doctor == null)
+        {
+            throw new RuntimeException("Doctor with ID: " + doctorId + " not found.");
         }
 
+        Appointment appointment = new Appointment();
+        appointment.setPatient(patient);
+        appointment.setDoctor(doctor);
+        appointment.setAppointmentTime(Date.from(timeDto.getTime().toInstant()));
+        appointment.setStatus("Scheduled");
         return this.appointmentRepository.save(appointment);
+
     }
 
-    public List<Appointment> getAppointmentByPatientId(Long patientId)
+    public List<Appointment> getAppointmentsByPatientId(Long patientId)
     {
+        Patient patient = this.patientRepository.findById(patientId).orElse(null);
+
+        if(patient == null)
+        {
+            throw new RuntimeException("Patient with ID: " + patientId + " not found.");
+        }
+
         return this.appointmentRepository.getAppointmentByPatientId(patientId);
     }
 
-    public List<Appointment> getAppointmentByDoctorId(Long doctorId)
+    public List<Appointment> getAppointmentsByDoctorId(Long doctorId)
     {
+        Doctor doctor = this.doctorRepository.findById(doctorId).orElse(null);
+
+        if(doctor == null)
+        {
+            throw new RuntimeException("Doctor with ID: " + doctorId + " not found.");
+        }
         return this.appointmentRepository.getAppointmentByDoctorId(doctorId);
+
     }
 
     
-    public Appointment rescheduleAppointment(Long appointmentId, Date time) {
+    public Appointment rescheduleAppointment(Long appointmentId, Date time) 
+    {
          Appointment appointment = appointmentRepository.findById(appointmentId).orElse(null);
          if (appointment == null) 
-            return null;
+         {
+            throw new RuntimeException("Appointment with ID: " + appointmentId + " not found.");
+         }
 
-        LocalDateTime newTime = time.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-        appointment.setAppointmentTime(newTime);
+        // LocalDateTime newTime = time.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        appointment.setAppointmentTime(time);
         appointment.setStatus("RESCHEDULED");
-
         return appointmentRepository.save(appointment);
+    }
 
-}
 }

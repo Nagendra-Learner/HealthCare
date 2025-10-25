@@ -10,13 +10,13 @@ import java.util.List;
 
 
 @Repository
-public interface MedicalRecordRepository extends JpaRepository<MedicalRecord, Long> {
-    @Query("Select m from MedicalRecord m where m.patientId=:patientId")
-    List<MedicalRecord> getMedicalRecordsByPatientId(@Param("patientId")Long patientId);
-
-    @Query("Select m from MedicalRecord m where m.doctorId=:doctorId")
-    List<MedicalRecord> getMedicalRecordsByDoctorId(@Param("doctorId")Long doctorId);
-
+public interface MedicalRecordRepository extends JpaRepository<MedicalRecord, Long> 
+{
     
-    
+    @Query("Select m from MedicalRecord m where m.patient.id = :patientId")
+    List<MedicalRecord> getMedicalRecordsByPatientId(@Param("patientId") Long patientId);
+
+    @Query("Select m from MedicalRecord m where m.doctor.id = :doctorId")
+    List<MedicalRecord> getMedicalRecordsByDoctorId(@Param("doctorId") Long doctorId);
+
 }

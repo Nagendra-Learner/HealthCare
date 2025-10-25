@@ -2,29 +2,32 @@ package com.wecp.healthcare_appointment_management_system.entity;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 public class Doctor extends User
 {
-   private String speciality;
+   private String specialty;
    private String availability;
 
    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
+   @JsonIgnore
    private Set<Appointment> appointments = new HashSet<>();
 
    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
+   @JsonIgnore
    private Set<MedicalRecord> medicalRecords = new HashSet<>();
 
-   public Doctor() {}
 
-   public String getSpeciality() {
-      return speciality;
+   public String getSpecialty() {
+      return specialty;
    }
 
-   public void setSpeciality(String speciality) {
-      this.speciality = speciality;
+   public void setSpecialty(String specialty) {
+      this.specialty = specialty;
    }
 
    public String getAvailability() {
@@ -50,4 +53,5 @@ public class Doctor extends User
    public void setMedicalRecords(Set<MedicalRecord> medicalRecords) {
       this.medicalRecords = medicalRecords;
    }
+   
 }

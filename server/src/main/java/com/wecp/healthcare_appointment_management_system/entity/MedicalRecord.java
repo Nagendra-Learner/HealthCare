@@ -6,74 +6,92 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name="medical_records")
-public class MedicalRecord {
-
+public class MedicalRecord 
+{
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long patientId;
-    private Long doctorId;
+
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private Patient patient;
+
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private Doctor doctor;
+
     private String diagnosis;
     private String prescription;
     private String notes;
     private LocalDateTime recordDate;
-    public MedicalRecord(Long id, Long patientId, Long doctorId, String diagnosis, String prescription, String notes,
-            LocalDateTime recordDate) {
-        this.id = id;
-        this.patientId = patientId;
-        this.doctorId = doctorId;
-        this.diagnosis = diagnosis;
-        this.prescription = prescription;
-        this.notes = notes;
-        this.recordDate = recordDate;
-    }
-    public MedicalRecord() {
-    }
-    public Long getId() {
+
+    public Long getId() 
+    {
         return id;
     }
-    public void setId(Long id) {
+
+    public void setId(Long id) 
+    {
         this.id = id;
     }
-    public Long getPatientId() {
-        return patientId;
+
+    public Patient getPatient() 
+    {
+        return patient;
     }
-    public void setPatientId(Long patientId) {
-        this.patientId = patientId;
+
+    public void setPatient(Patient patient) 
+    {
+        this.patient = patient;
     }
-    public Long getDoctorId() {
-        return doctorId;
+
+    public Doctor getDoctor() 
+    {
+        return doctor;
     }
-    public void setDoctorId(Long doctorId) {
-        this.doctorId = doctorId;
+
+    public void setDoctor(Doctor doctor) 
+    {
+        this.doctor = doctor;
     }
-    public String getDiagnosis() {
+
+    public String getDiagnosis() 
+    {
         return diagnosis;
     }
-    public void setDiagnosis(String diagnosis) {
+
+    public void setDiagnosis(String diagnosis) 
+    {
         this.diagnosis = diagnosis;
     }
-    public String getPrescription() {
+
+    public String getPrescription() 
+    {
         return prescription;
     }
-    public void setPrescription(String prescription) {
+
+    public void setPrescription(String prescription) 
+    {
         this.prescription = prescription;
     }
-    public String getNotes() {
+
+    public String getNotes() 
+    {
         return notes;
     }
-    public void setNotes(String notes) {
+
+    public void setNotes(String notes) 
+    {
         this.notes = notes;
     }
-    public LocalDateTime getRecordDate() {
+
+    public LocalDateTime getRecordDate() 
+    {
         return recordDate;
     }
-    public void setRecordDate(LocalDateTime recordDate) {
+
+    public void setRecordDate(LocalDateTime recordDate) 
+    {
         this.recordDate = recordDate;
     }
-
-    
-
-    
-    
+   
 }

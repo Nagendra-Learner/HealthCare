@@ -1,12 +1,12 @@
 package com.wecp.healthcare_appointment_management_system.entity;
 
 import javax.persistence.*;
-import java.util.Set;
-
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "users") // do not change table name
-public class User {
+public class User 
+{
     // implement user entity
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,17 +15,6 @@ public class User {
     String password;
     String email;
     String role;
-
-    public User() {
-    }
-
-    public User(Long id, String username, String password, String email, String role) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.role = role;
-    }
 
     public Long getId() {
         return id;
@@ -66,7 +55,5 @@ public class User {
     public void setRole(String role) {
         this.role = role;
     }
-
-    
     
 }
