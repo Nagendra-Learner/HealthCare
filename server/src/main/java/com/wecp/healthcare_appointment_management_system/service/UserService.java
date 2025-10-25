@@ -17,7 +17,25 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
+@Service
+public class UserService {
 
-public class UserService  {
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+    public void loginUser()
+    {
+
+    }
+
+    public void registerUser()
+    {
+        
+    }
+
+
 
 }
