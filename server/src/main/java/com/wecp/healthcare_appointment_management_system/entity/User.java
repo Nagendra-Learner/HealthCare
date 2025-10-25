@@ -5,6 +5,7 @@ import java.util.Set;
 
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "users") // do not change table name
 public class User {
     // implement user entity
