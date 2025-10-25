@@ -11,5 +11,28 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent //todo: complete missing code..
+export class LoginComponent implements OnInit//todo: complete missing code..\
+{
+  loginForm!:FormGroup;
+  submitted=false;
+  constructor(private fb:FormBuilder){}
+
+  ngOnInit(): void {
+    this.loginForm=this.fb.group({
+      username:['',[Validators.required,Validators.email]],
+      password:['',Validators.required,Validators.minLength(8)]
+    })
+  }
+
+  get f(){
+    return this.loginForm.controls;
+  }
+
+  onSubmit(){
+    this.submitted=true;
+    if(this.loginForm.invalid) return;
+    alert('Login successful!');
+  }
+
+}
 

@@ -1,1 +1,51 @@
-//todo: complete missing code..
+<div class="container-fluid vh-100 d-flex justify-content-center align-items-center" style="background-color: #9d7d52;">
+    <div class="card shadow-lg p-4" style="width: 400px; border-radius: 10px; background:linear-gradient(135deg,#c19a6b,#f2ebe3); ">
+        <h3 class="text-center fw-bold mb-4" style="line-height: 1.4;">
+    <strong>HEALTHCARE </strong><br> 
+    <strong>APPOINTMENT </strong><br> 
+    <strong> MANAGEMENT</strong><b> SYSTEM</b>
+</h3>
+
+<p class="text-center text-muted mb-4">
+    Please enter your user and password</p>
+
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+        <label for="username" class="form-label fw-semibold" >Username</label><br>
+            <input id="username" type="email" formControlName="username" placeholder="name@example.com"/>
+            <div *ngIf="(submitted || f['username'].touched) && f['username'].errors" class="mt-1">
+                <!-- <small class="text-danger" *ngIf="f['username'].errors['required']"></ngIf>' -->
+                <small class="text-danger" *ngIf="f['username'].errors['required']">Please enter username.</small>
+            </div>
+    </div>
+
+
+    <!-- password -->
+    <div class="mb-3">
+        <label for="password" class="form-label fw-semibold">Password</label><br>
+            <input id="password" type="password" formControlName="password" placeholder="*******"/>
+
+            <div *ngIf="(submitted || f['username'].touched) && f['password'].errors" class="mt-1">
+                <small class="text-danger" *ngIf="f['password'].errors['required']">Please enter password.</small>
+
+                
+            </div>
+    </div>
+
+
+
+    <!-- login button-->
+     <div class="d-grid mt-4">
+    <button type="submit" class="btn btn-primary fw-semibold" [disabled]="loginForm.invalid">Login</button>
+    </div>
+
+ 
+
+    <div class="text-center mt-3">
+        <span class="text-muted">Don't have an account?</span>
+        <a href="#" class="text-primary text-decoration-none">Registration</a>
+    </div>
+
+</form>
+</div>
+</div>

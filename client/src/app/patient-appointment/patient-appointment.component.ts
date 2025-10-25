@@ -20,12 +20,12 @@ export class PatientAppointmentComponent implements OnInit {
     const userIdString = localStorage.getItem('userId');
 
     // Parse userId to an integer, if it exists
-    const userId = userIdString ? parseInt(userIdString, 10) : null;
-    this.appointmentList
-    this.httpService.getAppointmentByPatient(userId).subscribe((data)=>{
-      this.appointmentList=data;
-      console.log(this.appointmentList);
-    })
+    // const userId = userIdString ? parseInt(userIdString, 10) : null;
+    // this.appointmentList
+    // this.httpService.getAppointmentByPatient(userId).subscribe((data)=>{
+    //   this.appointmentList=data;
+    //   console.log(this.appointmentList);
+    // })
   }
 
 

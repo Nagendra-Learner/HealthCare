@@ -13,6 +13,9 @@ public class Patient extends User {
     Set<MedicalRecord> medicalRecords;
     @OneToMany(mappedBy = "patient",cascade=CascadeType.ALL)
     Set<Appointment> appointments;
+    public Patient(){
+        
+    }
     public Patient(Long id,String username,String password,String email,User user,Set<MedicalRecord> medicalRecords,Set<Appointment> appointments){
         super(id,username,password,email,"PATIENT");
         this.user=user;

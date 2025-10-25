@@ -20,7 +20,6 @@ import { ReceptionistScheduleAppointmentsComponent } from './receptionist-schedu
 
 
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,7 +31,8 @@ import { ReceptionistScheduleAppointmentsComponent } from './receptionist-schedu
     DoctorAvailabilityComponent,
     DoctorAppointmentComponent,
     ReceptionistAppointmentsComponent,
-    ReceptionistScheduleAppointmentsComponent
+    ReceptionistScheduleAppointmentsComponent,
+
 
     
   ],
