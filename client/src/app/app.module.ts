@@ -19,7 +19,6 @@ import { ReceptionistAppointmentsComponent } from './receptionist-appointments/r
 import { ReceptionistScheduleAppointmentsComponent } from './receptionist-schedule-appointments/receptionist-schedule-appointments.component';
 
 
-
 @NgModule({
   declarations: [
     AppComponent,
