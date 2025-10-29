@@ -1,15 +1,63 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { HttpService } from '../../services/http.service';
-import { DatePipe } from '@angular/common';
+<app-dashbaord></app-dashbaord>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Schedule Appointment</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container mt-4">
+    <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">Schedule Appointment</h4>
+      </div>
+      <div class="card-body">
+        <form>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="doctorId" class="form-label fw-bold">Select Doctor</label>
+              <select id="doctorId" class="form-select">
+                <option value="">-- Choose Doctor --</option>
+                <option value="1">Doctor1 (Cardiology)</option>
+                <option value="2">Doctor2 (Neurology)</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="patientId" class="form-label fw-bold">Patient ID</label>
+              <input id="patientId" type="text" class="form-control" placeholder="Enter patient ID" />
+            </div>
+          </div>
 
-@Component({
-  selector: 'app-receptionist-schedule-appointments',
-  templateUrl: './receptionist-schedule-appointments.component.html',
-  styleUrls: ['./receptionist-schedule-appointments.component.scss'],
-  providers: [DatePipe] 
-  
-})
-export class ReceptionistScheduleAppointmentsComponent 
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="appointmentDate" class="form-label fw-bold">Date</label>
+              <input id="appointmentDate" type="date" class="form-control" />
+            </div>
+            <div class="col-md-6">
+              <label for="time" class="form-label fw-bold">Time</label>
+              <input id="time" type = "time" class="form-control" />
+            </div>
+          </div>
 
-//todo: complete missing code..
+          <div class="mb-3">
+            <label for="reason" class="form-label fw-bold">Reason</label>
+            <textarea id="reason" class="form-control" rows="3" placeholder="Enter reason for appointment"></textarea>
+          </div>
+
+          <div class="text-end">
+            <button type="submit" class="btn btn-success px-4">
+              <i class="bi bi-calendar-check"></i> Schedule
+            </button>
+          </div>
+        </form>
+
+        <div class="alert alert-success mt-3 d-none" id="successMessage">Appointment scheduled successfully!</div>
+        <div class="alert alert-danger mt-3 d-none" id="errorMessage">Something went wrong. Please try again.</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

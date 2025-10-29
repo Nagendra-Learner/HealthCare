@@ -1,34 +1,44 @@
+<!-- Dashboard -->
+<app-dashboard></app-dashboard>
 
+<!-- Appointments Section -->
+<div class="card mt-4 shadow-sm">
+  <div class="card-header bg-light fw-bold">
+    <h4 class="mb-0">Appointments</h4>
+  </div>
+  <div class="card-body p-0">
+    <table class="table table-bordered table-hover mb-0">
+      <thead class="thead-dark">
+        <tr>
+          <th>Appointment Id</th>
+          <th>Appointment Time</th>
+          <th>Status</th>
+          <th>Doctor</th>
+          <th>Patient</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="appointmentList && appointmentList.length > 0; else noData">
+        <tr *ngFor="let val of appointmentList">
+          <td>{{ val.id }}</td>
+          <td>{{ val.appointmentTime | date:'dd-MMM-yyyy hh:mm a' }}</td>
+          <td>{{ val.status }}</td>
+          <td>
+            <strong>{{ val.doctor.username }}</strong><br>
+            <small class="text-muted">{{ val.doctor.email }}</small>
+          </td>
+          <td>
+            <strong>{{ val.patient.username }}</strong><br>
+            <small class="text-muted">{{ val.patient.email }}</small>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-
-<div class="card mt-4">
-    <div class="card-header">
-        <h4>Appointments</h4>
-    </div>
-    <div class="card-body">
-        <table class="table table-boarderd">
-            <thead>
-                <th>Appointment Id</th>
-                <th>Appointment Time</th>
-                <th>Status</th>
-                <th>Doctor</th>
-                <th>Patient</th>
-               
-            </thead>
-            <tbody *ngFor="let val of appointmentList">
-                <tr >
-                    <td>{{val.id}}</td>
-                    <td>{{val.appointmentTime | date:'dd-MMM-yyyy hh:mm:a'}}</td>
-                    <td>{{val.status}}</td>
-                    <td><strong>{{val.doctor.username}}</strong><br>
-                        <small>{{val.doctor.email}}</small>
-                    </td>
-                    <td><strong>{{val.patient.username}}</strong><br>
-                        <small>{{val.patient.email}}</small>
-                    </td>
-                  
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <!-- No Data Template -->
+    <ng-template #noData>
+      <div class="p-3 text-center text-muted">
+        No appointments found.
+      </div>
+    </ng-template>
+  </div>
 </div>

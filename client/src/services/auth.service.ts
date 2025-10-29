@@ -19,7 +19,7 @@ export class AuthService {
     localStorage.setItem('token', token);
   }
 
-   SetRole(role:any)
+   saveRole(role:any)
   {
     localStorage.setItem('role',role);
   }

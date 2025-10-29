@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegistrationComponent } from './registration/registration.component';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { HttpService } from '../services/http.service';
 import { DashbaordComponent } from './dashbaord/dashbaord.component';
 import { PatientAppointmentComponent } from './patient-appointment/patient-appointment.component';
@@ -18,6 +18,8 @@ import { DoctorAvailabilityComponent } from './doctor-availability/doctor-availa
 import { ReceptionistAppointmentsComponent } from './receptionist-appointments/receptionist-appointments.component';
 import { ReceptionistScheduleAppointmentsComponent } from './receptionist-schedule-appointments/receptionist-schedule-appointments.component';
 
+import { HttpInterceptor } from '@angular/common/http';
+import { AuthInterceptor } from '../auth.interceptors';
 
 
 
@@ -43,7 +45,11 @@ import { ReceptionistScheduleAppointmentsComponent } from './receptionist-schedu
     ReactiveFormsModule,
     HttpClientModule,
   ],
-  providers: [HttpService, HttpClientModule],
+  providers: [HttpService, HttpClientModule, {
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true,
+  }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

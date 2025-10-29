@@ -22,10 +22,13 @@ export class PatientAppointmentComponent implements OnInit {
     // Parse userId to an integer, if it exists
     const userId = userIdString ? parseInt(userIdString, 10) : null;
     this.appointmentList
-    this.httpService.getAppointmentByPatient(userId).subscribe((data)=>{
-      this.appointmentList=data;
-      console.log(this.appointmentList);
-    })
+    if(userId != null)
+    {
+      this.httpService.getAppointmentByPatient(userId).subscribe((data)=>{
+        this.appointmentList=data;
+        console.log(this.appointmentList);
+      })
+    }
   }
 
 

@@ -1,1 +1,23 @@
-//todo: complete missing code..
+<app-dashbaord></app-dashbaord>
+<div class="container mt-4">
+    <h2>Update Availability</h2>
+
+    <form [formGroup] = "availabilityForm" (ngSubmit) = "onSubmit()">
+      <div class = "form-group">
+        <label for = "availability">Availability</label>
+        <input type = "text" id = "availability" class = "form-control" [ngClass] = "{'is-invalid' : f['availability'].invalid && f['availability'].touched}" formControlName="availability" placeholder="Enter availability (e.g., Yes or No)">
+        <div *ngIf = "f['availability']?.invalid && f['availability']?.touched" class = "invalid-feedback">
+            <small *ngIf = "f['availability']?.errors?.['required']">Availability is required.</small>
+        </div>
+      </div>
+    
+      <button type = "submit" class = "btn btn-primary w-100 btn-lg mt-3" [disabled] = "availabilityForm.invalid">Submit</button>
+      <div *ngIf = "successMessage" class = "alert alert-success">
+        {{ successMessage }}
+      </div>
+  
+      <div *ngIf = "errorMessage" class = "alert alert-danger">
+          {{ errorMessage }}
+      </div>
+      </form>
+    </div>
