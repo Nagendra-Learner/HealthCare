@@ -13,3 +13,6 @@ import { AuthService } from '../../services/auth.service';
 })
 export class LoginComponent //todo: complete missing code..
 
+{
+  itemForm: any;
+}

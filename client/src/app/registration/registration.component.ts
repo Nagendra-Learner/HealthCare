@@ -7,5 +7,28 @@ import { HttpService } from '../../services/http.service';
   selector: 'app-registration',
   templateUrl: './registration.component.html',
 })
-export class RegistrationComponent //todo: complete missing code..
+export class RegistrationComponent implements OnInit{
+  itemForm!:FormGroup;
+  constructor(private fb:FormBuilder,private route:Router){
+  }
+  ngOnInit(): void {
+    this.itemForm=this.fb.group({
+      username:['',[Validators.required,Validators.pattern(/^[a-zA-Z0-9]+$/)]],
+      email:['',[Validators.required,Validators.email]],
+      password:['',[Validators.required,Validators.pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*[!@$%&*])(?=.*[0-9])[A-Za-z\d!@$%&*]{8, }$/)]],
+      role:['',Validators.required]
+    })
 
+  }
+  onSubmit(){
+    if(this.itemForm.valid){
+    console.log(this.itemForm.value);
+    this.route.navigate(['/client/login']);
+    }
+  }
+  get f(){
+    return this.itemForm.controls;
+  }
+
+
+} //todo: complete missing code..

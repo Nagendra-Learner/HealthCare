@@ -27,7 +27,7 @@
                 </div>
               </div>
                 <div class="mb-3">
-                  <input type="datetime-local" name ="time"formControlName="time" [(ngModel)]="formModel.time" class="form-control" id="time" placeholder="Appointment Time">
+                  <input type="datetime-local" name ="time"formControlName="time" class="form-control" id="time" placeholder="Appointment Time">
                   <div *ngIf="itemForm.controls['time'].invalid && (itemForm.controls['time'].dirty || itemForm.controls['time'].touched)"
                   class="ng-dirty">
                   <span *ngIf="itemForm.controls['time'].errors">

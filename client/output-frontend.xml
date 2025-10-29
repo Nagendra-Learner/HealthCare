@@ -1,0 +1,141 @@
+<?xml version="1.0"?>
+<testsuite name="Chrome Headless 131.0.0.0 (Linux x86_64)" package="" timestamp="2025-10-27T12:40:49" id="0" hostname="ip-172-31-17-221" tests="36" errors="0" failures="8" time="0.191">
+  <properties>
+    <property name="browser.fullName" value="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/131.0.0.0 Safari/537.36"/>
+  </properties>
+  <testcase name="DoctorAppointmentComponent should create" time="0.022" classname="Chrome_Headless_131_0_0_0_(Linux_x86_64).DoctorAppointmentComponent"/>
+  <testcase name="DoctorAvailabilityComponent should create" time="0.005" classname="Chrome_Headless_131_0_0_0_(Linux_x86_64).DoctorAvailabilityComponent"/>
+  <testcase name="HttpService should be created" time="0.001" classname="Chrome_Headless_131_0_0_0_(Linux_x86_64).HttpService"/>
+  <testcase name="HttpService should register a patient" time="0.004" classname="Chrome_Headless_131_0_0_0_(Linux_x86_64).HttpService"/>
+  <testcase name="HttpService should register a doctor" time="0.002" classname="Chrome_Headless_131_0_0_0_(Linux_x86_64).HttpService"/>
+  <testcase name="HttpService should register a receptionist" time="0.001" classname="Chrome_Headless_131_0_0_0_(Linux_x86_64).HttpService"/>
+  <testcase name="HttpService should retrieve doctors" time="0.002" classname="Chrome_Headless_131_0_0_0_(Linux_x86_64).HttpService"/>
+  <testcase name="HttpService should schedule an appointment" time="0.002" classname="Chrome_Headless_131_0_0_0_(Linux_x86_64).HttpService"/>
+  <testcase name="HttpService should schedule an appointment by receptionist" time="0.001" classname="Chrome_Headless_131_0_0_0_(Linux_x86_64).HttpService"/>
+  <testcase name="HttpService should reschedule an appointment" time="0.002" classname="Chrome_Headless_131_0_0_0_(Linux_x86_64).HttpService"/>
+  <testcase name="HttpService should get all appointments" time="0.001" classname="Chrome_Headless_131_0_0_0_(Linux_x86_64).HttpService"/>
+  <testcase name="HttpService should get appointments by doctor" time="0.001" classname="Chrome_Headless_131_0_0_0_(Linux_x86_64).HttpService"/>
+  <testcase name="HttpService should get appointments by patient" time="0.002" classname="Chrome_Headless_131_0_0_0_(Linux_x86_64).HttpService"/>
+  <testcase name="HttpService should update doctor availability" time="0.001" classname="Chrome_Headless_131_0_0_0_(Linux_x86_64).HttpService"/>
+  <testcase name="HttpService should login user" time="0.002" classname="Chrome_Headless_131_0_0_0_(Linux_x86_64).HttpService"/>
+  <testcase name="LoginComponent should have invalid form if username and password are empty" time="0.005" classname="Chrome_Headless_131_0_0_0_(Linux_x86_64).LoginComponent"/>
+  <testcase name="LoginComponent should have invalid form if username or password is empty" time="0.002" classname="Chrome_Headless_131_0_0_0_(Linux_x86_64).LoginComponent"/>
+  <testcase name="LoginComponent should have valid form if username and password are provided" time="0.002" classname="Chrome_Headless_131_0_0_0_(Linux_x86_64).LoginComponent"/>
+  <testcase name="PatientAppointmentComponent should create" time="0.019" classname="Chrome_Headless_131_0_0_0_(Linux_x86_64).PatientAppointmentComponent"/>
+  <testcase name="ReceptionistAppointmentsComponent should create" time="0.006" classname="Chrome_Headless_131_0_0_0_(Linux_x86_64).ReceptionistAppointmentsComponent"/>
+  <testcase name="ReceptionistAppointmentsComponent should have an invalid form when empty" time="0.003" classname="Chrome_Headless_131_0_0_0_(Linux_x86_64).ReceptionistAppointmentsComponent"/>
+  <testcase name="ReceptionistAppointmentsComponent should validate form when id and time are provided" time="0.002" classname="Chrome_Headless_131_0_0_0_(Linux_x86_64).ReceptionistAppointmentsComponent"/>
+  <testcase name="ReceptionistScheduleAppointmentsComponent should create" time="0.02" classname="Chrome_Headless_131_0_0_0_(Linux_x86_64).ReceptionistScheduleAppointmentsComponent"/>
+  <testcase name="ReceptionistScheduleAppointmentsComponent should have an invalid form when empty" time="0.006" classname="Chrome_Headless_131_0_0_0_(Linux_x86_64).ReceptionistScheduleAppointmentsComponent"/>
+  <testcase name="ReceptionistScheduleAppointmentsComponent should validate form when all fields are provided" time="0.006" classname="Chrome_Headless_131_0_0_0_(Linux_x86_64).ReceptionistScheduleAppointmentsComponent"/>
+  <testcase name="RegistrationComponent should have invalid form if any field is empty" time="0.02" classname="Chrome_Headless_131_0_0_0_(Linux_x86_64).RegistrationComponent"/>
+  <testcase name="RegistrationComponent should have invalid form if email is invalid" time="0.008" classname="Chrome_Headless_131_0_0_0_(Linux_x86_64).RegistrationComponent"/>
+  <testcase name="RegistrationComponent should have valid form if all fields are filled correctly" time="0.012" classname="Chrome_Headless_131_0_0_0_(Linux_x86_64).RegistrationComponent">
+    <failure type="">Expected false to be truthy.
+    at &lt;Jasmine&gt;
+    at UserContext.apply (src/tests/registration.component.spec.ts:81:24)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:372:26)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:287:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:371:52)
+</failure>
+  </testcase>
+  <testcase name="RegistrationComponent should set specialty and availability validators when role is DOCTOR" time="0.007" classname="Chrome_Headless_131_0_0_0_(Linux_x86_64).RegistrationComponent">
+    <failure type="">TypeError: Cannot read properties of undefined (reading 'validator')
+    at UserContext.apply (src/tests/registration.component.spec.ts:92:29)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:372:26)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:287:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:371:52)
+    at Zone.run (node_modules/zone.js/fesm2015/zone.js:134:43)
+    at runInTestZone (node_modules/zone.js/fesm2015/zone-testing.js:582:34)
+    at UserContext.&lt;anonymous&gt; (node_modules/zone.js/fesm2015/zone-testing.js:597:20)
+    at &lt;Jasmine&gt;
+</failure>
+  </testcase>
+  <testcase name="RegistrationComponent should clear specialty and availability validators when role is not DOCTOR" time="0.007" classname="Chrome_Headless_131_0_0_0_(Linux_x86_64).RegistrationComponent">
+    <failure type="">TypeError: Cannot read properties of undefined (reading 'validator')
+    at UserContext.apply (src/tests/registration.component.spec.ts:104:29)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:372:26)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:287:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:371:52)
+    at Zone.run (node_modules/zone.js/fesm2015/zone.js:134:43)
+    at runInTestZone (node_modules/zone.js/fesm2015/zone-testing.js:582:34)
+    at UserContext.&lt;anonymous&gt; (node_modules/zone.js/fesm2015/zone-testing.js:597:20)
+    at &lt;Jasmine&gt;
+</failure>
+  </testcase>
+  <testcase name="ScheduleAppointmentComponent should create" time="0.003" classname="Chrome_Headless_131_0_0_0_(Linux_x86_64).ScheduleAppointmentComponent"/>
+  <testcase name="ScheduleAppointmentComponent should have an invalid form when empty" time="0.003" classname="Chrome_Headless_131_0_0_0_(Linux_x86_64).ScheduleAppointmentComponent">
+    <failure type="">TypeError: Cannot read properties of undefined (reading 'valid')
+    at UserContext.apply (src/tests/schedule-appointment.component.spec.ts:38:31)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:372:26)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:287:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:371:52)
+    at Zone.run (node_modules/zone.js/fesm2015/zone.js:134:43)
+    at runInTestZone (node_modules/zone.js/fesm2015/zone-testing.js:582:34)
+    at UserContext.&lt;anonymous&gt; (node_modules/zone.js/fesm2015/zone-testing.js:597:20)
+    at &lt;Jasmine&gt;
+</failure>
+  </testcase>
+  <testcase name="ScheduleAppointmentComponent should validate patientId as required" time="0.003" classname="Chrome_Headless_131_0_0_0_(Linux_x86_64).ScheduleAppointmentComponent">
+    <failure type="">TypeError: Cannot read properties of undefined (reading 'controls')
+    at UserContext.apply (src/tests/schedule-appointment.component.spec.ts:42:40)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:372:26)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:287:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:371:52)
+    at Zone.run (node_modules/zone.js/fesm2015/zone.js:134:43)
+    at runInTestZone (node_modules/zone.js/fesm2015/zone-testing.js:582:34)
+    at UserContext.&lt;anonymous&gt; (node_modules/zone.js/fesm2015/zone-testing.js:597:20)
+    at &lt;Jasmine&gt;
+</failure>
+  </testcase>
+  <testcase name="ScheduleAppointmentComponent should validate doctorId as required" time="0.003" classname="Chrome_Headless_131_0_0_0_(Linux_x86_64).ScheduleAppointmentComponent">
+    <failure type="">TypeError: Cannot read properties of undefined (reading 'controls')
+    at UserContext.apply (src/tests/schedule-appointment.component.spec.ts:51:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:372:26)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:287:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:371:52)
+    at Zone.run (node_modules/zone.js/fesm2015/zone.js:134:43)
+    at runInTestZone (node_modules/zone.js/fesm2015/zone-testing.js:582:34)
+    at UserContext.&lt;anonymous&gt; (node_modules/zone.js/fesm2015/zone-testing.js:597:20)
+    at &lt;Jasmine&gt;
+</failure>
+  </testcase>
+  <testcase name="ScheduleAppointmentComponent should validate time as required" time="0.002" classname="Chrome_Headless_131_0_0_0_(Linux_x86_64).ScheduleAppointmentComponent">
+    <failure type="">TypeError: Cannot read properties of undefined (reading 'controls')
+    at UserContext.apply (src/tests/schedule-appointment.component.spec.ts:60:35)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:372:26)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:287:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:371:52)
+    at Zone.run (node_modules/zone.js/fesm2015/zone.js:134:43)
+    at runInTestZone (node_modules/zone.js/fesm2015/zone-testing.js:582:34)
+    at UserContext.&lt;anonymous&gt; (node_modules/zone.js/fesm2015/zone-testing.js:597:20)
+    at &lt;Jasmine&gt;
+</failure>
+  </testcase>
+  <testcase name="ScheduleAppointmentComponent should have a valid form when all fields are filled" time="0.003" classname="Chrome_Headless_131_0_0_0_(Linux_x86_64).ScheduleAppointmentComponent">
+    <failure type="">TypeError: Cannot read properties of undefined (reading 'controls')
+    at UserContext.apply (src/tests/schedule-appointment.component.spec.ts:69:24)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:372:26)
+    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:287:39)
+    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:371:52)
+    at Zone.run (node_modules/zone.js/fesm2015/zone.js:134:43)
+    at runInTestZone (node_modules/zone.js/fesm2015/zone-testing.js:582:34)
+    at UserContext.&lt;anonymous&gt; (node_modules/zone.js/fesm2015/zone-testing.js:597:20)
+    at &lt;Jasmine&gt;
+</failure>
+  </testcase>
+  <system-out>
+    <![CDATA[Chrome Headless 131.0.0.0 (Linux x86_64) WARN: '
+  It looks like you're using ngModel on the same form field as formControlName.
+  Support for using the ngModel input property and ngModelChange event with
+  reactive form directives has been deprecated in Angular v6 and will be removed
+  in a future version of Angular.
+
+  For more information on this, see our API docs here:
+  https://angular.io/api/forms/FormControlName#use-with-ngmodel
+  '
+
+]]>
+  </system-out>
+  <system-err/>
+</testsuite>

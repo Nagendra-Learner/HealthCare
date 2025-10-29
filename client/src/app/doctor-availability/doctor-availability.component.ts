@@ -10,3 +10,4 @@ import { HttpService } from '../../services/http.service';
 export class DoctorAvailabilityComponent //todo: complete missing code..
 
 
+{}

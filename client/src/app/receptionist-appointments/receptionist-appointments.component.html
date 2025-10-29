@@ -1,1 +1,29 @@
-//todo: complete missing code..
+<h3>Appointments</h3>
+<table>
+    <tr>
+        <th>Appointment Id</th>
+        <th>Appointment Time</th>
+        <th>Status</th>
+        <th>Doctor</th>
+        <th>Patient</th>
+        <th>Action</th>
+    </tr>
+    <tr *ngFor="let appointment of appointments">
+        <td>{{appointment.id}}</td>
+        <td>{{appointment.appointmentTime | date: 'dd-MMM-yyyy hh:mm a'}}</td>
+        <td>{{appointment.status}}</td>
+        <td><b>{{appointment.doctor.username}}</b><br>{{appointment.doctor.email}}</td>
+        <td><b>{{appointment.patient.username}}</b><br>{{appointment.patient.email}}</td>
+        <td><button (click)="editAppointments(appointment)">Reschedule</button></td>
+    </tr>
+</table>
+
+<div *ngIf="showAppointment">
+    <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
+        <label>Appointment Id</label>
+        <input type="number" formControlName="id">
+        <label>Appointment Time</label>
+        <input type="datetime-local" formControlName="time">
+        <button type="submit">Submit</button>
+    </form>
+</div>
