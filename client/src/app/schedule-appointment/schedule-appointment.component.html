@@ -1,15 +1,95 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { HttpService } from '../../services/http.service';
-import { DatePipe } from '@angular/common';
+<app-dashbaord></app-dashbaord>
 
-@Component({
-  selector: 'app-receptionist-schedule-appointments',
-  templateUrl: './receptionist-schedule-appointments.component.html',
-  styleUrls: ['./receptionist-schedule-appointments.component.scss'],
-  providers: [DatePipe] 
-  
-})
-export class ReceptionistScheduleAppointmentsComponent 
+<div class="container mt-4">
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0">Schedule Appointment</h4>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
+        <!-- Doctor Selection -->
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="doctorId" class="form-label fw-bold">
+              <span style="color:red">*</span> Select Doctor
+            </label>
+            <select id="doctorId" class="form-select" formControlName="doctorId"
+              [ngClass]="{'is-invalid': f['doctorId'].invalid && f['doctorId'].touched}">
+              <option value="">-- Choose Doctor --</option>
+              <option *ngFor="let doctor of availableDoctors" [value]="doctor.id">
+                {{ doctor.username }} ({{ doctor.specialty }})
+              </option>
+            </select>
+            <div *ngIf="f['doctorId'].invalid && f['doctorId'].touched" class="invalid-feedback">
+              <small *ngIf="f['doctorId'].errors?.['required']">Doctor selection is required.</small>
+            </div>
+          </div>
 
-//todo: complete missing code..
+          <!-- Patient ID -->
+          <div class="col-md-6">
+            <label for="patientId" class="form-label fw-bold">Patient ID</label>
+            <input id="patientId" type="number" class="form-control" formControlName = "patientId" [disabled] = "patient!=null" />
+          </div>
+        </div>
+
+        <!-- Date and Time -->
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="appointmentDate" class="form-label fw-bold">
+              <span style="color:red">*</span> Date
+            </label>
+            <input id="appointmentDate" type="date" class="form-control" formControlName="appointmentDate"
+              [attr.min]="today"
+              [ngClass]="{'is-invalid': f['appointmentDate'].invalid && f['appointmentDate'].touched}" />
+            <div *ngIf="f['appointmentDate'].invalid && f['appointmentDate'].touched" class="invalid-feedback">
+              <small *ngIf="f['appointmentDate'].errors?.['required']">Date is required.</small>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <label for="time" class="form-label fw-bold">
+              <span style="color:red">*</span> Time
+            </label>
+            <input id="time" type="time" class="form-control" formControlName="time"
+              [disabled]="!f['appointmentDate'].value"
+              [attr.min]="f['appointmentDate'].value === today ? currentTime : null"
+              [ngClass]="{'is-invalid': f['time'].invalid && f['time'].touched}" />
+            <div *ngIf="f['time'].invalid && f['time'].touched" class="invalid-feedback">
+              <small *ngIf="f['time'].errors?.['required']">Time is required.</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reason -->
+        <div class="mb-3">
+          <label for="reason" class="form-label fw-bold">
+            <span style="color:red">*</span> Reason
+          </label>
+          <textarea id="reason" class="form-control" rows="3" formControlName="reason"
+            placeholder="Enter reason for appointment"
+            [ngClass]="{'is-invalid': f['reason'].invalid && f['reason'].touched}"></textarea>
+          <div *ngIf="f['reason'].invalid && f['reason'].touched" class="invalid-feedback">
+            <small *ngIf="f['reason'].errors?.['required']">Reason is required.</small>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-end">
+          <button type="submit" class="btn btn-success px-4" [disabled]="itemForm.invalid">
+            <i class="bi bi-calendar-check"></i> Schedule
+          </button>
+        </div>
+      </form>
+
+      <!-- Success Message -->
+      <div *ngIf="successMessage" class="alert alert-success mt-3">
+        {{ successMessage }}
+      </div>
+
+      <!-- Error Message -->
+      <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+        {{ errorMessage }}
+      </div>
+    </div>
+  </div>
+</div>

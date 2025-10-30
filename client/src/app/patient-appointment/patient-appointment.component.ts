@@ -17,15 +17,18 @@ export class PatientAppointmentComponent implements OnInit {
     this.getAppointments();
   }
   getAppointments() {
-    const userIdString = localStorage.getItem('userId');
+    const userIdString = localStorage.getItem('user_id');
 
     // Parse userId to an integer, if it exists
     const userId = userIdString ? parseInt(userIdString, 10) : null;
     this.appointmentList
-    this.httpService.getAppointmentByPatient(userId).subscribe((data)=>{
-      this.appointmentList=data;
-      console.log(this.appointmentList);
-    })
+    if(userId != null)
+    {
+      this.httpService.getAppointmentByPatient(userId).subscribe((data)=>{
+        this.appointmentList=data;
+        console.log(this.appointmentList);
+      })
+    }
   }
 
 

@@ -13,18 +13,23 @@ import java.util.Date;
 public class TimeDto {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date time;
+    private LocalDateTime time;
+
+    public TimeDto()
+    {
+        
+    }
 
     @JsonCreator
-    public TimeDto(@JsonProperty("time") Date time) {
+    public TimeDto(@JsonProperty("time") LocalDateTime  time) {
         this.time = time;
     }
 
-    public Date getTime() {
+    public LocalDateTime getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(LocalDateTime time) {
         this.time = time;
     }
 }

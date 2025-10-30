@@ -1,0 +1,11 @@
+POST http://localhost:5000/api/doctors/register
+Content-Type: Application/json
+
+{
+    "username": "John",
+    "password": "jshgdkbkd5",
+    "email" : "john@lti.com",
+    "role": "DOCTOR",
+    "specialty": "FDS",
+    "availability" : "Yes"
+}

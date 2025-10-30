@@ -1,1 +1,34 @@
-//todo: complete missing code..
+<app-dashbaord></app-dashbaord>
+<div class="container mt-4">
+  <h3 class="mb-3">Appointments</h3>
+  <div class="card">
+    <div class="card-body">
+      <table class="table table-bordered table-hover">
+        <thead class="thead-dark">
+          <tr>
+            <th>Appointment Id</th>
+            <th>Appointment Time</th>
+            <th>Status</th>
+            <th>Doctor</th>
+            <th>Patient</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let appointment of appointments">
+            <td>{{ appointment.id }}</td>
+            <td>{{ appointment.appointmentTime | date:'dd-MMM-yyyy hh:mm a' }}</td>
+            <td>{{ appointment.status }}</td>
+            <td>
+              <strong>{{ appointment.doctor.username }}</strong><br>
+              <small>{{ appointment.doctor.email }}</small>
+            </td>
+            <td>
+              <strong>{{ appointment.patient.username }}</strong><br>
+              <small>{{ appointment.patient.email }}</small>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

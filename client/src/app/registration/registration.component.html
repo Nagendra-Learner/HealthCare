@@ -1,1 +1,93 @@
-//todo: complete missing code..
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-4 p-md-5">
+          <h1 class="h4 text-center fw-bold mb-2">HEALTHCARE APPOINTMENT MANAGEMENT SYSTEM</h1>
+
+          <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
+            <!-- Username -->
+            <div class="mb-3">
+              <label for="username" class="form-label"><span style="color: red;">*</span> Username</label>
+              <input type="text" class="form-control" [ngClass]="{'is-invalid': f['username'].invalid && f['username'].touched}" id="username" formControlName="username">
+              <div *ngIf="f['username']?.invalid && f['username']?.touched" class="invalid-feedback">
+                <small *ngIf="f['username']?.errors?.['required']">Username is required.</small>
+                <small *ngIf="f['username']?.errors?.['pattern']">Username should not contain special characters.</small>
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+              <label for="email" class="form-label"><span style="color: red;">*</span> Email address</label>
+              <input type="email" class="form-control" [ngClass]="{'is-invalid': f['email'].invalid && f['email'].touched}" id="email" formControlName="email">
+              <div *ngIf="f['email']?.invalid && f['email']?.touched" class="invalid-feedback">
+                <small *ngIf="f['email']?.errors?.['required']">Email is required.</small>
+                <small *ngIf="f['email']?.errors?.['email']">Email must be valid.</small>
+              </div>
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3">
+              <label for="password" class="form-label"><span style="color: red;">*</span> Password</label>
+              <input type="password" class="form-control" [ngClass]="{'is-invalid': f['password'].invalid && f['password'].touched}" id="password" formControlName="password">
+              <div *ngIf="f['password']?.invalid && f['password']?.touched" class="invalid-feedback">
+                <small *ngIf="f['password']?.errors?.['required']">Password is required.</small>
+                <small *ngIf="f['password']?.errors?.['pattern']">Password must contain at least one uppercase, one lowercase, one digit, one special character, and be at least 8 characters long.</small>
+              </div>
+            </div>
+
+            <!-- Role -->
+            <div class="mb-3">
+              <label for="role" class="form-label"><span style="color: red;">*</span> Role</label>
+              <select class="form-select" [ngClass]="{'is-invalid': f['role'].invalid && f['role'].touched}" formControlName="role" id="role">
+                <option value="" disabled>Please Choose a Role</option>
+                <option value="DOCTOR">Doctor</option>
+                <option value="PATIENT">Patient</option>
+                <option value="RECEPTIONIST">Receptionist</option>
+              </select>
+              <div *ngIf="f['role']?.invalid && f['role']?.touched" class="invalid-feedback">
+                <small *ngIf="f['role']?.errors?.['required']">Please choose a role.</small>
+              </div>
+            </div>
+
+            <!-- Specialty (Visible only for DOCTOR) -->
+            <div class="mb-3" *ngIf="itemForm.get('role')?.value === 'DOCTOR'">
+              <label for="specialty" class="form-label"><span style="color: red;">*</span> Specialty</label>
+              <input type="text" class="form-control" [ngClass]="{'is-invalid': f['specialty'].invalid && f['specialty'].touched}" id="specialty" formControlName="specialty">
+              <div *ngIf="f['specialty']?.invalid && f['specialty']?.touched" class="invalid-feedback">
+                <small *ngIf="f['specialty']?.errors?.['required']">Specialty is required for doctors.</small>
+              </div>
+            </div>
+
+            <!-- Availability (Visible only for DOCTOR) -->
+            <div class="mb-3" *ngIf="itemForm.get('role')?.value === 'DOCTOR'">
+              <label for="availability" class="form-label"><span style="color: red;">*</span> Availability</label>
+              <input type="text" class="form-control" [ngClass]="{'is-invalid': f['availability'].invalid && f['availability'].touched}" id="availability" formControlName="availability">
+              <div *ngIf="f['availability']?.invalid && f['availability']?.touched" class="invalid-feedback">
+                <small *ngIf="f['availability']?.errors?.['required']">Availability is required for doctors.</small>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary w-100 btn-lg mt-3" [disabled]="!itemForm.valid">Submit</button>
+
+            <!-- Navigation Link -->
+            <div class="text-center mt-4">
+              <a routerLink="/login">Go to Login</a>
+            </div>
+
+            <!-- Success Message -->
+            <div *ngIf="successMessage" class="alert alert-success mt-3">
+              {{ successMessage }}
+            </div>
+
+            <!-- Error Message -->
+            <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+              {{ errorMessage }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -18,9 +18,9 @@ export class ReceptionistScheduleAppointmentsComponent implements OnInit {
   isAdded: boolean=false;
   constructor(public httpService:HttpService,private formBuilder: FormBuilder,private datePipe: DatePipe) {
     this.itemForm = this.formBuilder.group({
-      patientId: [this.formModel.patientId,[ Validators.required]],
-      doctorId: [this.formModel.doctorId,[ Validators.required]],
-      time: [this.formModel.time,[ Validators.required]],
+      patientId: ['',[ Validators.required]],
+      doctorId: ['',[ Validators.required]],
+      time: ['',[ Validators.required]],
   });
    }
 
@@ -31,17 +31,15 @@ export class ReceptionistScheduleAppointmentsComponent implements OnInit {
   onSubmit()
   {
    
-    debugger;
     const formattedTime = this.datePipe.transform(this.itemForm.controls['time'].value, 'yyyy-MM-dd HH:mm:ss');
 
     // Update the form value with the formatted date
     this.itemForm.controls['time'].setValue(formattedTime);
-    debugger;
     this.httpService.ScheduleAppointmentByReceptionist( this.itemForm.value).subscribe((data)=>{
    
       this.itemForm.reset();
       this.responseMessage="Appointment Save Successfully";
-      this.isAdded=false;
+      setTimeout(()=> this.responseMessage=null, 3000);
     })
     
   }
