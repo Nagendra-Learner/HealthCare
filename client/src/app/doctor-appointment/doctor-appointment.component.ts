@@ -22,7 +22,7 @@ export class DoctorAppointmentComponent implements OnInit
   getAppointments(): void 
   {
     this.errorMessage = '';
-    const userIdString = localStorage.getItem('userId');
+    const userIdString = localStorage.getItem('user_id');
     const doctorId = userIdString ? parseInt(userIdString, 10) : null;
     
     if(doctorId!==null && !isNaN(doctorId))

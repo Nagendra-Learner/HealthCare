@@ -49,6 +49,11 @@ export class HttpService {
       headers: this.getAuthHeaders(),
     });
   }
+  getDoctorsForReceptionist(): Observable<any> {
+    return this.http.get(`${this.serverName}/api/receptionist/doctors`, {
+      headers: this.getAuthHeaders(),
+    });
+  }
 
   ScheduleAppointment(details: any): Observable<any> {
     const { patientId, doctorId,appointmentDate, time } = details;
@@ -62,10 +67,12 @@ export class HttpService {
   }
 
   ScheduleAppointmentByReceptionist(details: any): Observable<any> {
-    const { patientId, doctorId } = details;
+    const { patientId, doctorId,appointmentDate, time } = details;
+    const combinedDateTime:string=`${appointmentDate} ${time}:00`;
+    const timeDto={time: combinedDateTime};
     return this.http.post(
       `${this.serverName}/api/receptionist/appointment?patientId=${patientId}&doctorId=${doctorId}`,
-      details,
+      timeDto,
       { headers: this.getAuthHeaders() }
     );
   }
@@ -86,7 +93,7 @@ export class HttpService {
 
   getAppointmentByDoctor(doctorId: number): Observable<any> {
     return this.http.get(
-      `${this.serverName}/api/doctor/appointments/${doctorId}`,
+      `${this.serverName}/api/doctor/appointments?doctorId=${doctorId}`,
       { headers: this.getAuthHeaders() }
     );
   }
