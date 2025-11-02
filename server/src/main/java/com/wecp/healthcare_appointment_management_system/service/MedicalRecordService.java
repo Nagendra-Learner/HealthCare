@@ -25,6 +25,12 @@ public class MedicalRecordService
     public MedicalRecord getMedicalRecordById(Long medicalRecordId)
     {
         MedicalRecord medicalRecord = this.medicalRecordRepository.findById(medicalRecordId).orElse(null);
+
+        if(medicalRecord == null)
+        {
+            throw new EntityNotFoundException("Medical Record with ID: " + medicalRecordId + " doesnot exists.");
+        }
+
         return (medicalRecord);
     }
 
@@ -48,7 +54,19 @@ public class MedicalRecordService
         {
             throw new EntityNotFoundException("Patient with ID: " + patientId + " not found.");
         }
+
         return medicalRecordRepository.getMedicalRecordsByPatientId(patientId);
+    }
+
+    public MedicalRecord isMedicalRecordExsists(Long patientId, Long doctorId)
+    {
+        MedicalRecord medicalRecord = medicalRecordRepository.findMedicalRecordByPatientIdDoctorId(patientId, doctorId);
+        if(medicalRecord == null)
+        {
+            throw new EntityNotFoundException("Medical Record not found.");
+        }
+
+        return medicalRecord;
     }
 
     public MedicalRecord createMedicalReport(MedicalRecord medicalRecord)
@@ -68,9 +86,7 @@ public class MedicalRecordService
         newMedicalRecord.setNotes(medicalRecord.getNotes());
         newMedicalRecord.setPrescription(medicalRecord.getPrescription());
         newMedicalRecord.setRecordDate(medicalRecord.getRecordDate());
-        //newMedicalRecord.setPatient(medicalRecord.getPatient());
-        //newMedicalRecord.setDoctor(medicalRecord.getDoctor());
-
+        
         return  medicalRecordRepository.save(newMedicalRecord);
         
     }

@@ -10,7 +10,7 @@ import com.wecp.healthcare_appointment_management_system.exceptions.TimeConflict
 import com.wecp.healthcare_appointment_management_system.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -45,7 +45,11 @@ public class AppointmentService
         }
 
         List<Appointment> existingAppointments = appointmentRepository.getAppointmentByDoctorId(doctorId);
-        Date appointmentTime = Date.from(timeDto.getTime().toInstant());
+        if(timeDto.getTime() == null)
+        {
+            throw new IllegalArgumentException("Invalid Time Format");
+        }
+        LocalDateTime appointmentTime = timeDto.getTime();
 
         for(Appointment existing: existingAppointments)
         {
@@ -89,7 +93,7 @@ public class AppointmentService
     }
 
     
-    public Appointment rescheduleAppointment(Long appointmentId, Date time) 
+    public Appointment rescheduleAppointment(Long appointmentId, TimeDto time) 
     {
          Appointment appointment = appointmentRepository.findById(appointmentId).orElse(null);
 
@@ -98,7 +102,7 @@ public class AppointmentService
             throw new EntityNotFoundException("Appointment with ID: " + appointmentId + " not found.");
          }
 
-        appointment.setAppointmentTime(time);
+        appointment.setAppointmentTime(time.getTime());
         appointment.setStatus(AppointmentStatus.RESCHEDULED.name());
 
         return appointmentRepository.save(appointment);

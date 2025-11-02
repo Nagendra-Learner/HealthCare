@@ -3,10 +3,13 @@ package com.wecp.healthcare_appointment_management_system.service;
 import com.wecp.healthcare_appointment_management_system.entity.Doctor;
 import com.wecp.healthcare_appointment_management_system.entity.Patient;
 import com.wecp.healthcare_appointment_management_system.entity.Receptionist;
+import com.wecp.healthcare_appointment_management_system.entity.User;
 import com.wecp.healthcare_appointment_management_system.exceptions.DuplicateEntityException;
+import com.wecp.healthcare_appointment_management_system.exceptions.EntityNotFoundException;
 import com.wecp.healthcare_appointment_management_system.repository.DoctorRepository;
 import com.wecp.healthcare_appointment_management_system.repository.PatientRepository;
 import com.wecp.healthcare_appointment_management_system.repository.ReceptionistRepository;
+import com.wecp.healthcare_appointment_management_system.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,29 +24,38 @@ import java.util.Optional;
 @Service
 public class UserService implements UserDetailsService {
 
-    @Autowired
-    DoctorRepository doctorRepository;
+   @Autowired
+   private UserRepository userRepository;
 
-    @Autowired
-    PatientRepository patientRepository;
+   @Autowired
+   private DoctorRepository doctorRepository;
 
-    @Autowired
-    ReceptionistRepository receptionistRepository;
+   @Autowired
+   private PatientRepository patientRepository;
+
+   @Autowired
+   private ReceptionistRepository receptionistRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
 
     public Doctor registerDoctor(Doctor doctor)
     {
-        Doctor retrievedDoctor = this.doctorRepository.findByUsername(doctor.getUsername()).orElse(null);
+        User user1 = this.userRepository.findByUsername(doctor.getUsername()).orElse(null);
 
-        if(retrievedDoctor != null)
+        if(user1 != null)
         {
-            if(retrievedDoctor.getUsername().equals(doctor.getUsername()))
+            if(user1.getUsername().equals(doctor.getUsername()))
             {
                 throw new DuplicateEntityException("Username already exists.");
             }
-            if(retrievedDoctor.getEmail().equals(doctor.getEmail()))
+        }
+
+        User user2  = this.userRepository.findByEmail(doctor.getEmail()).orElse(null);
+
+        if(user2 != null)
+        {
+            if(user2.getEmail().equals(doctor.getEmail()))
             {
                 throw new DuplicateEntityException("Email already exists.");
             }
@@ -56,34 +68,47 @@ public class UserService implements UserDetailsService {
 
     public Patient registerPatient(Patient patient)
     {
-        Patient retrievedPatient = this.patientRepository.findByUsername(patient.getUsername()).orElse(null);
+        User user1 = this.userRepository.findByUsername(patient.getUsername()).orElse(null);
 
-        if(retrievedPatient != null)
+        if(user1 != null)
         {
-            if(retrievedPatient.getUsername().equals(patient.getUsername()))
+            if(user1.getUsername().equals(patient.getUsername()))
             {
                 throw new DuplicateEntityException("Username already exists.");
             }
-            if(retrievedPatient.getEmail().equals(patient.getEmail()))
+        }
+
+        User user2 = this.userRepository.findByEmail(patient.getEmail()).orElse(null);
+
+        if(user2 != null)
+        {
+            if(user2.getEmail().equals(patient.getEmail()))
             {
                 throw new DuplicateEntityException("Email already exists.");
             }
         }
+
         patient.setPassword(passwordEncoder.encode(patient.getPassword()));
         return patientRepository.save(patient);
     }
 
     public Receptionist registerReceptionist(Receptionist receptionist)
     {
-        Receptionist retrievedReceptionist = this.receptionistRepository.findByUsername(receptionist.getUsername()).orElse(null);
+        User user1 = this.userRepository.findByUsername(receptionist.getUsername()).orElse(null);
 
-        if(retrievedReceptionist != null)
+        if(user1 != null)
         {
-            if(retrievedReceptionist.getUsername().equals(receptionist.getUsername()))
+            if(user1.getUsername().equals(receptionist.getUsername()))
             {
                 throw new DuplicateEntityException("Username already exists.");
-            }
-            if(retrievedReceptionist.getEmail().equals(receptionist.getEmail()))
+            } 
+        }
+
+        User user2 = this.userRepository.findByEmail(receptionist.getEmail()).orElse(null);
+
+        if(user2 != null)
+        {
+            if(user2.getEmail().equals(receptionist.getEmail()))
             {
                 throw new DuplicateEntityException("Email already exists.");
             }
@@ -95,38 +120,16 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<Doctor> doctor= doctorRepository.findByUsername(username);
-        if(doctor.isPresent())
+        Optional<User> user = this.userRepository.findByUsername(username);
+        if(user.isPresent())
         {
             return new org.springframework.security.core.userdetails.User(
-                doctor.get().getUsername(),    
-                doctor.get().getPassword(), 
-                Collections.singletonList(new SimpleGrantedAuthority(doctor.get().getRole())));
-        }
-
-        Optional<Patient> patient= patientRepository.findByUsername(username);
-        if(patient.isPresent())
-        {
-            return new org.springframework.security.core.userdetails.User(
-                patient.get().getUsername(), 
-                patient.get().getPassword(), 
-                Collections.singletonList(new SimpleGrantedAuthority(patient.get().getRole())));
-        }
-
-        Optional<Receptionist> receptionist= receptionistRepository.findByUsername(username);
-        if(receptionist.isPresent())
-        {
-            return new org.springframework.security.core.userdetails.User(
-                receptionist.get().getUsername(),
-                receptionist.get().getPassword(), 
-                Collections.singletonList(new SimpleGrantedAuthority(receptionist.get().getRole())));
+                user.get().getUsername(),    
+                user.get().getPassword(), 
+                Collections.singletonList(new SimpleGrantedAuthority(user.get().getRole())));
         }
         
-        throw new UsernameNotFoundException("User " + username + " not found.");
+        throw new EntityNotFoundException("User " + username + " not found.");
     }
-
-    
-
-
 
 }

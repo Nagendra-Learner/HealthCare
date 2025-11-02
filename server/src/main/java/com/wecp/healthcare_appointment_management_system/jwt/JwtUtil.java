@@ -4,12 +4,10 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;
-
-
 import com.wecp.healthcare_appointment_management_system.repository.UserRepository;
-
 import org.springframework.security.core.userdetails.UserDetails;
 import com.wecp.healthcare_appointment_management_system.entity.User;
+import com.wecp.healthcare_appointment_management_system.exceptions.EntityNotFoundException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,10 +27,10 @@ public class JwtUtil {
     public String generateToken(String username) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + expiration * 1000);
-        User user = userRepository.findByUsername(username).get();
+        User user = userRepository.findByUsername(username).orElse(null);
 
         if (user == null) {
-            throw new RuntimeException("User not found: " + username);
+            throw new EntityNotFoundException("User not found: " + username);
         }
 
         Map<String, Object> claims = new HashMap<>();

@@ -1,63 +1,99 @@
 <app-dashbaord></app-dashbaord>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Schedule Appointment</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-</head>
-<body>
-  <div class="container mt-4">
-    <div class="card shadow-sm">
-      <div class="card-header bg-primary text-white">
-        <h4 class="mb-0">Schedule Appointment</h4>
+
+<div class="container mt-4">
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0">Schedule Appointment</h4>
+    </div>
+    <div class="card-body">
+      <form [formGroup] = "itemForm" (ngSubmit) = "onSubmit()">
+        <!-- Doctor Selection -->
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="doctorId" class="form-label fw-bold">
+              <span style="color:red">*</span> Select Doctor
+            </label>
+            <select id="doctorId" class="form-select" formControlName="doctorId"
+              [ngClass]="{'is-invalid': f['doctorId'].invalid && f['doctorId'].touched}">
+              <option value="">-- Choose Doctor --</option>
+              <option *ngFor = "let doctor of availableDoctors" [value] = "doctor.id">
+                {{ doctor.username }} ({{ doctor.specialty }})
+              </option>
+            </select>
+            <div *ngIf ="f['doctorId'].invalid && f['doctorId'].touched" class="invalid-feedback">
+              <small *ngIf="f['doctorId'].errors?.['required']">Doctor selection is required.</small>
+            </div>
+          </div>
+
+          <!-- Patient ID -->
+          <div class="col-md-6">
+            <label for="patientId" class="form-label fw-bold">Patient ID</label>
+            <input id="patientId"  class="form-control" formControlName = "patientId" readonly />
+          </div>
+        </div>
+
+        <!-- Date and Time -->
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="appointmentDate" class="form-label fw-bold">
+              <span style="color:red">*</span> Date
+            </label>
+            <input id="appointmentDate" type="date" class="form-control" formControlName="appointmentDate"
+              [attr.min] = "today"
+              [ngClass]="{'is-invalid': f['appointmentDate'].invalid && f['appointmentDate'].touched}" />
+            <div *ngIf="f['appointmentDate'].invalid && f['appointmentDate'].touched" class="invalid-feedback">
+              <small *ngIf = "f['appointmentDate'].errors?.['required']">Date is required.</small>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <label for="time" class="form-label fw-bold">
+              <span style="color:red">*</span> Time
+            </label>
+            <input id = "time" type="time" class="form-control" formControlName="time"
+              [disabled] = "!f['appointmentDate'].value"
+              [attr.min] = "f['appointmentDate'].value === today ? currentTime: null"
+              [ngClass]="{'is-invalid': f['time'].invalid && f['time'].touched}" />
+            <div *ngIf="f['time'].invalid && f['time'].touched" class="invalid-feedback">
+              <small *ngIf="f['time'].errors?.['required']">Time is required.</small>
+            </div>
+          </div>
+
+          <div *ngIf = "itemForm.errors?.['pastDateTime']" class = "alert alert-danger mb-3">
+            Cannot select a past date and time.
+          </div>
+        </div>
+
+        <!-- Reason -->
+        <div class="mb-3">
+          <label for="reason" class="form-label fw-bold">
+              Reason
+          </label>
+          <textarea id="reason" class="form-control" rows="3" formControlName="reason"
+            placeholder="Enter reason for appointment"
+            [ngClass]="{'is-invalid': f['reason'].invalid && f['reason'].touched}"></textarea>
+          <div *ngIf="f['reason'].invalid && f['reason'].touched" class="invalid-feedback">
+            <small *ngIf="f['reason'].errors?.['minlength']">Must be at least 7 characters.</small>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-end">
+          <button type="submit" class="btn btn-success px-4" [disabled] = "itemForm.invalid">
+            <i class="bi bi-calendar-check"></i> Schedule
+          </button>
+        </div>
+      </form>
+
+      <!-- Success Message -->
+      <div *ngIf = "successMessage" class="alert alert-success mt-3">
+        {{ successMessage }}
       </div>
-      <div class="card-body">
-        <form>
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label for="doctorId" class="form-label fw-bold">Select Doctor</label>
-              <select id="doctorId" class="form-select">
-                <option value="">-- Choose Doctor --</option>
-                <option value="1">Doctor1 (Cardiology)</option>
-                <option value="2">Doctor2 (Neurology)</option>
-              </select>
-            </div>
-            <div class="col-md-6">
-              <label for="patientId" class="form-label fw-bold">Patient ID</label>
-              <input id="patientId" type="text" class="form-control" placeholder="Enter patient ID" />
-            </div>
-          </div>
 
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label for="appointmentDate" class="form-label fw-bold">Date</label>
-              <input id="appointmentDate" type="date" class="form-control" />
-            </div>
-            <div class="col-md-6">
-              <label for="time" class="form-label fw-bold">Time</label>
-              <input id="time" type = "time" class="form-control" />
-            </div>
-          </div>
-
-          <div class="mb-3">
-            <label for="reason" class="form-label fw-bold">Reason</label>
-            <textarea id="reason" class="form-control" rows="3" placeholder="Enter reason for appointment"></textarea>
-          </div>
-
-          <div class="text-end">
-            <button type="submit" class="btn btn-success px-4">
-              <i class="bi bi-calendar-check"></i> Schedule
-            </button>
-          </div>
-        </form>
-
-        <div class="alert alert-success mt-3 d-none" id="successMessage">Appointment scheduled successfully!</div>
-        <div class="alert alert-danger mt-3 d-none" id="errorMessage">Something went wrong. Please try again.</div>
+      <!-- Error Message -->
+      <div *ngIf = "errorMessage" class="alert alert-danger mt-3">
+        {{ errorMessage }}
       </div>
     </div>
   </div>
-</body>
-</html>
+</div>

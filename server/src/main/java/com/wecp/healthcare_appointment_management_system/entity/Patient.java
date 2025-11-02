@@ -2,7 +2,9 @@ package com.wecp.healthcare_appointment_management_system.entity;
 
 import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.util.HashSet;
 import java.util.Set;
@@ -10,10 +12,11 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "patient")
 public class Patient extends User 
 {   // implement patient entity
-   
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<Appointment> appointments = new HashSet<>();

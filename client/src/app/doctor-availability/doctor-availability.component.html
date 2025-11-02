@@ -5,13 +5,18 @@
     <form [formGroup] = "availabilityForm" (ngSubmit) = "onSubmit()">
       <div class = "form-group">
         <label for = "availability">Availability</label>
-        <input type = "text" id = "availability" class = "form-control" [ngClass] = "{'is-invalid' : f['availability'].invalid && f['availability'].touched}" formControlName="availability" placeholder="Enter availability (e.g., Yes or No)">
+        <select type = "text" id = "availability" class = "form-control" [ngClass] = "{'is-invalid' : f['availability'].invalid && f['availability'].touched}" formControlName="availability" placeholder="Enter availability (e.g., Yes or No)">
+            <option value = "" disabled>Please select availability</option>
+            <option value = "Yes">Yes</option>
+            <option value = "No">No</option>
+        </select>
         <div *ngIf = "f['availability']?.invalid && f['availability']?.touched" class = "invalid-feedback">
             <small *ngIf = "f['availability']?.errors?.['required']">Availability is required.</small>
         </div>
       </div>
     
       <button type = "submit" class = "btn btn-primary w-100 btn-lg mt-3" [disabled] = "availabilityForm.invalid">Submit</button>
+
       <div *ngIf = "successMessage" class = "alert alert-success">
         {{ successMessage }}
       </div>

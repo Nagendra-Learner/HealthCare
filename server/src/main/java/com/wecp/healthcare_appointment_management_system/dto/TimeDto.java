@@ -3,28 +3,24 @@ package com.wecp.healthcare_appointment_management_system.dto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import java.time.LocalDateTime;
-import java.util.Date;
 
-/**
- * @author Ubaid Khanzada
- */
-public class TimeDto {
+@Setter
+@Getter
+@NoArgsConstructor
+public class TimeDto 
+{
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date time;
+    private LocalDateTime time;
 
     @JsonCreator
-    public TimeDto(@JsonProperty("time") Date time) {
+    public TimeDto(@JsonProperty("time") LocalDateTime  time) 
+    {
         this.time = time;
     }
 
-    public Date getTime() {
-        return time;
-    }
-
-    public void setTime(Date time) {
-        this.time = time;
-    }
 }

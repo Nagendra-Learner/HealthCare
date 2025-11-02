@@ -3,9 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpService } from '../../services/http.service';
 import { AuthService } from '../../services/auth.service';
-import { catchError, of, tap } from 'rxjs';
-
-
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +11,8 @@ import { catchError, of, tap } from 'rxjs';
   styleUrls: ['./login.component.scss']
 })
 
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit 
+{
   itemForm!: FormGroup;
   errorMessage: string | null = null;
 
@@ -33,22 +32,17 @@ export class LoginComponent implements OnInit {
 
   onSubmit(): void {
     if (this.itemForm.valid) {
-      this.httpService.Login(this.itemForm.value).subscribe({
+      this.httpService.login(this.itemForm.value).subscribe({
         next: (response) => {
           console.log(response);
-          // this.authService.saveToken(response.token);
-          // this.authService.saveUserId(response.userId);
-          // this.authService.saveRole(response.roles[0]);
           localStorage.setItem("token", response.token);
           localStorage.setItem("role", response.role);
           localStorage.setItem("user_id", response.userId);
           console.log(localStorage.getItem("role"));
           this.router.navigate(["/dashboard"]);
         },
-        error: (error: string) => {
-          this.errorMessage = 'Invalid username or password';
-          console.error("Login error:", error);
-          return of(null);
+        error: (error: HttpErrorResponse) => {
+          this.handleError(error);
         },
       });
 
@@ -60,6 +54,28 @@ export class LoginComponent implements OnInit {
   get f()
   {
     return this.itemForm.controls;
+  }
+
+  private handleError(error: HttpErrorResponse): void 
+  {
+    console.log(typeof error)
+    console.log(error)
+    if (error.error instanceof ErrorEvent) 
+    {
+      this.errorMessage = `Client-side error: ${error.error.message}`;
+    }
+    else 
+    {
+      if(typeof error.error === "string")
+      {
+        console.log(error.status);
+        this.errorMessage = error.error;
+      }
+      else if(error.error?.message)
+      {
+        this.errorMessage = error.error.message;
+      }
+    }
   }
 
 }

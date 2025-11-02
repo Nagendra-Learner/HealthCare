@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface ReceptionistRepository extends JpaRepository<Receptionist, Long>  
 {
     public Optional<Receptionist> findByUsername(String username);
+    public Optional<Receptionist> findByEmail(String email);
 }

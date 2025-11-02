@@ -17,6 +17,7 @@ export class ReceptionistAppointmentsComponent implements OnInit
   appointments: Appointment[]=[];
   selectedAppointment: any;
   showAppointment: boolean=false;
+  errorMessage:string|null=null;
 
   constructor(private fb: FormBuilder, private http: HttpService, private datePipe: DatePipe)
   {
@@ -42,17 +43,26 @@ export class ReceptionistAppointmentsComponent implements OnInit
     this.selectedAppointment=appointment;
     this.itemForm.patchValue({
       id: appointment.id,
-      time: this.datePipe.transform(appointment.appointmentTime, 'yyyy-MM-ddTHH:mm')
-
+      time: this.datePipe.transform(appointment.appointmentTime, 'yyyy-MM-dd HH:mm')
     });
     this.showAppointment=true;
   }
 
   onSubmit()
   {
-    const formattedTime= this.datePipe.transform(this.itemForm.value.time, 'yyyy-MM-dd HH:mm:ss');
+    //const formattedTime= this.datePipe.transform(this.itemForm.value.time, 'yyyy-MM-dd HH:mm:ss');
+    // const formattedTime = this.itemForm.value.time;
+    // console.log(formattedTime);
+    // const { appointmentDate, time } = this.itemForm.value;
+    //   const now = new Date();
+    //   const selectedDateTime = new Date(`${appointmentDate}T${time}`);
+      const formattedTime= this.datePipe.transform(this.itemForm.value.time, 'yyyy-MM-dd HH:mm:ss');
 
-    this.http.reScheduleAppointment(this.itemForm.value.id, formattedTime).subscribe({
+      // if (selectedDateTime < now) {
+      //   this.errorMessage = 'You cannot select a past date or time!';
+      //   return;
+      // }
+    this.http.reScheduleAppointment(this.itemForm.value.id, {time: formattedTime || ''}).subscribe({
       next:()=>
         {
           alert("Appointment updated successfully");

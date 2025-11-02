@@ -10,9 +10,9 @@ import { DoctorAppointmentComponent } from './doctor-appointment/doctor-appointm
 import { DoctorAvailabilityComponent } from './doctor-availability/doctor-availability.component';
 import { ReceptionistAppointmentsComponent } from './receptionist-appointments/receptionist-appointments.component';
 import { ReceptionistScheduleAppointmentsComponent } from './receptionist-schedule-appointments/receptionist-schedule-appointments.component';
-
-
-
+import { MedicalRecordCreateComponent } from './medicalrecord-create/medicalrecord-create.component';
+import { MedicalRecordEditComponent } from './medicalrecord-edit/medicalrecord-edit.component';
+import { MedicalRecordViewComponent } from './medicalrecord-view/medicalrecord-view.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -24,8 +24,10 @@ const routes: Routes = [
   { path: 'doctor-availability', component: DoctorAvailabilityComponent },
   { path: 'receptionist-appointments', component: ReceptionistAppointmentsComponent },
   { path: 'receptionist-schedule-appointments', component: ReceptionistScheduleAppointmentsComponent },
-  
-  
+  {path: 'medicalRecords/create/:patientId/:doctorId/:appointmentId', component: MedicalRecordCreateComponent},
+  {path: 'medicalRecords/edit/:medicalRecordId/:patientId/:doctorId/:appointmentId', component: MedicalRecordEditComponent},
+  {path: 'medicalRecords/view/:medicalRecordId', component: MedicalRecordViewComponent},
+
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login', pathMatch: 'full' },
 ];

@@ -1,11 +1,14 @@
 package com.wecp.healthcare_appointment_management_system.dto;
 
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.Setter;
 
-public class LoginRequest {
-
+@Getter
+@Setter
+public class LoginRequest 
+{
     private String username;
     private String password;
 
@@ -15,19 +18,4 @@ public class LoginRequest {
         this.password = password;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }

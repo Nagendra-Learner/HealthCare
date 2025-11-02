@@ -1,0 +1,75 @@
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header text-center">
+      <h3>Edit Medical Record</h3>
+    </div>
+    <div class="card-body">
+      <form [formGroup] = "medicalRecordEditForm" (ngSubmit) = "onSubmit()">
+        
+        <!-- Appointment ID -->
+        <div class="mb-3">
+          <label for="appointmentId" class="form-label"><span style = "color: red;">* </span>Appointment ID</label>
+          <input id="appointmentId" type="number" class="form-control" formControlName="appointmentId" readonly/>
+        </div>
+        
+        <!-- Doctor ID -->
+        <div class="mb-3">
+          <label for="doctorId" class="form-label"><span style = "color: red;">* </span>Doctor ID</label>
+          <input id="doctorId" type="number" class="form-control" formControlName="doctorId" readonly/>
+          <!-- <div class="text-danger mt-1" *ngIf = "f['doctorId']?.touched && f['doctorId']?.invalid">
+            <small *ngIf = "f['doctorId']?.errors?.['required']">Doctor ID is required.</small>
+          </div> -->
+        </div>
+
+        <!-- Patient ID -->
+        <div class="mb-3">
+          <label for="patientId" class="form-label"><span style = "color: red;">* </span>Patient ID</label>
+          <input id="patientId" type="number" class="form-control" formControlName="patientId" readonly/>
+          <!-- <div class="text-danger mt-1" *ngIf = "f['patientId']?.touched && f['patientId']?.invalid">
+            <small *ngIf = "f['patientId']?.errors?.['required']">Patient ID is required.</small>
+          </div> -->
+        </div>
+
+        <!-- Diagnosis -->
+        <div class="mb-3">
+          <label for="diagnosis" class="form-label"><span style = "color: red;">* </span>Diagnosis</label>
+          <input id="diagnosis" type="text" class="form-control" formControlName="diagnosis" />
+          <div class="text-danger mt-1" *ngIf = "f['diagnosis']?.touched && f['diagnosis']?.invalid">
+            <small *ngIf = "f['diagnosis']?.errors?.['required']">Diagnosis is required.</small>
+          </div>
+        </div>
+
+        <!-- Prescription -->
+        <div class="mb-3">
+          <label for="prescription" class="form-label">Prescription</label>
+          <textarea id="prescription" class="form-control" rows="3" formControlName="prescription"></textarea>
+        </div>
+
+        <!-- Notes -->
+        <div class="mb-3">
+          <label for="notes" class="form-label">Notes</label>
+          <textarea id="notes" class="form-control" rows="3" formControlName="notes"></textarea>
+        </div>
+
+        <!-- Record Date -->
+        <div class="mb-3">
+          <label for="recordDate" class="form-label"><span style = "color: red;">* </span>Record Date</label>
+          <input id="recordDate" type="datetime-local" class="form-control" formControlName="recordDate" [min] = "today" [max] = "today" readonly/>
+        </div>
+
+        <!-- Submit Button -->
+        <button type = "submit" class="btn btn-primary w-100" [disabled] = "medicalRecordEditForm.invalid">
+          Update Record
+        </button>
+      </form>
+
+      <!-- Success & Error Messages -->
+      <div *ngIf="successMessage" class="alert alert-success mt-3 text-center">
+        {{ successMessage }}
+      </div>
+      <div *ngIf="errorMessage" class="alert alert-danger mt-3 text-center">
+        {{ errorMessage }}
+      </div>
+    </div>
+  </div>
+</div>

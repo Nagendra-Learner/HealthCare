@@ -17,7 +17,9 @@ import { DoctorAppointmentComponent } from './doctor-appointment/doctor-appointm
 import { DoctorAvailabilityComponent } from './doctor-availability/doctor-availability.component';
 import { ReceptionistAppointmentsComponent } from './receptionist-appointments/receptionist-appointments.component';
 import { ReceptionistScheduleAppointmentsComponent } from './receptionist-schedule-appointments/receptionist-schedule-appointments.component';
-
+import { MedicalRecordCreateComponent } from './medicalrecord-create/medicalrecord-create.component';
+import { MedicalRecordEditComponent } from './medicalrecord-edit/medicalrecord-edit.component';
+import { MedicalRecordViewComponent } from './medicalrecord-view/medicalrecord-view.component';
 import { HttpInterceptor } from '@angular/common/http';
 import { AuthInterceptor } from '../auth.interceptors';
 
@@ -34,9 +36,10 @@ import { AuthInterceptor } from '../auth.interceptors';
     DoctorAvailabilityComponent,
     DoctorAppointmentComponent,
     ReceptionistAppointmentsComponent,
-    ReceptionistScheduleAppointmentsComponent
-
-    
+    ReceptionistScheduleAppointmentsComponent,
+    MedicalRecordCreateComponent,
+    MedicalRecordEditComponent,
+    MedicalRecordViewComponent,
   ],
   imports: [
     BrowserModule,

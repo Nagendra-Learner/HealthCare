@@ -44,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
                 .authorizeRequests()
                 // Publicly accessible endpoints
-                .antMatchers("/api/user/login", "/api/patient/register", "/api/doctors/register", "/api/receptionist/register").permitAll()
+                .antMatchers("/api/user/login", "/api/patient/register", "/api/doctor/register", "/api/receptionist/register").permitAll()
 
                 // Role-based access control
                 .antMatchers("/api/doctor/**").hasAuthority("DOCTOR")

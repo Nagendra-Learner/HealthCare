@@ -2,14 +2,12 @@ package com.wecp.healthcare_appointment_management_system.controller;
 import com.wecp.healthcare_appointment_management_system.entity.Appointment;
 import com.wecp.healthcare_appointment_management_system.entity.Doctor;
 import com.wecp.healthcare_appointment_management_system.entity.MedicalRecord;
-import com.wecp.healthcare_appointment_management_system.exceptions.DuplicateEntityException;
-import com.wecp.healthcare_appointment_management_system.exceptions.EntityNotFoundException;
 import com.wecp.healthcare_appointment_management_system.service.DoctorService;
+import com.wecp.healthcare_appointment_management_system.service.MedicalRecordService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.sql.SQLException;
 import java.util.List;
 
 @RestController
@@ -29,24 +25,8 @@ public class DoctorController
     @Autowired
     private DoctorService doctorService;
 
-
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<String> handleEntityNotFoundException(EntityNotFoundException enfEx)
-    {
-        return new ResponseEntity<>(enfEx.getMessage(), HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(DuplicateEntityException.class)
-    public ResponseEntity<String> handleDuplicateEntityException(DuplicateEntityException deEx)
-    {
-        return new ResponseEntity<>(deEx.getMessage(), HttpStatus.CONFLICT);
-    }
-
-    @ExceptionHandler(SQLException.class)
-    public ResponseEntity<String> handleSQLException(SQLException sqlEx)
-    {
-        return new ResponseEntity<>(sqlEx.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    @Autowired
+    private MedicalRecordService medicalRecordService;
 
     @GetMapping("/appointments")
     public ResponseEntity<List<Appointment>> viewAppointments(@RequestParam Long doctorId) 
@@ -59,7 +39,7 @@ public class DoctorController
         return ResponseEntity.ok(appointments);
     }
 
-    @PostMapping("/availability")
+    @PutMapping("/availability")
     public ResponseEntity<Doctor> manageAvailability(@RequestParam Long doctorId, @RequestParam String availability) 
     {
         Doctor doctor = doctorService.manageAvailability(doctorId, availability);
@@ -68,35 +48,62 @@ public class DoctorController
 
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<Doctor> registerDoctor(@RequestBody Doctor doctor)
-    {
-        Doctor newDoctor = doctorService.registerDoctor(doctor);
-        return new ResponseEntity<Doctor>(newDoctor, HttpStatus.CREATED);
-    }
+    // @GetMapping("/medicalrecords")
+    // public ResponseEntity<List<MedicalRecord>> viewMedicalRecords(@RequestParam Long doctorId) 
+    // {
+    //     List<MedicalRecord> medicalRecords = doctorService.viewMedicalRecords(doctorId);
+
+    //     if(medicalRecords.isEmpty())
+    //     {
+    //         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    //     }
+    //     return new ResponseEntity<>(medicalRecords, HttpStatus.OK);
+    // }
 
     @GetMapping("/medicalrecords")
-    public ResponseEntity<List<MedicalRecord>> viewMedicalRecords(@RequestParam Long doctorId) 
+    public ResponseEntity<MedicalRecord> viewMedicalRecordById(@RequestParam Long medicalRecordId) 
     {
-        List<MedicalRecord> medicalRecords = doctorService.viewMedicalRecords(doctorId);
+        MedicalRecord medicalRecord = medicalRecordService.getMedicalRecordById(medicalRecordId);
 
-        if(medicalRecords.isEmpty())
-        {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(medicalRecords,HttpStatus.OK);
+        return new ResponseEntity<>(medicalRecord, HttpStatus.OK);
     }
 
-    @PostMapping("/medicalrecords/{patientId}")
-    public ResponseEntity<MedicalRecord> createMedicalRecord(@PathVariable Long patientId, @RequestBody MedicalRecord medicalRecord)
+    // @GetMapping("/medicalrecords/{patientId}")
+    // public ResponseEntity<MedicalRecord> viewMedicalRecordByPatientId(@PathVariable Long patientId) 
+    // {
+    //     MedicalRecord medicalRecord = medicalRecordService.viewMedicalRecordsByPatientId(patientId);
+
+    //     return new ResponseEntity<>(medicalRecord, HttpStatus.OK);
+    // }
+
+    // @GetMapping("/medicalrecords/{doctorId}")
+    // public ResponseEntity<MedicalRecord> viewMedicalRecordByDoctorId(@PathVariable Long doctorId) 
+    // {
+    //     MedicalRecord medicalRecord = medicalRecordService.viewMedicalRecordsByDoctorId(doctorId);
+
+    //     return new ResponseEntity<>(medicalRecord, HttpStatus.OK);
+    // }
+
+    @GetMapping("/medicalrecords/{patientId}/{doctorId}")
+    public ResponseEntity<MedicalRecord> viewMedicalRecordByPatientIdDoctorId(@PathVariable Long patientId, @PathVariable Long doctorId) 
     {
-        return new ResponseEntity<MedicalRecord>(this.doctorService.createMedicalRecord(patientId, medicalRecord), HttpStatus.CREATED);
+        MedicalRecord medicalRecord = medicalRecordService.isMedicalRecordExsists(patientId, doctorId);
+
+        return new ResponseEntity<>(medicalRecord, HttpStatus.OK);
     }
 
-    @PutMapping("/medicalrecords/{patientId}")
-    public ResponseEntity<MedicalRecord> updateMedicalRecord(@PathVariable Long patientId, @RequestBody MedicalRecord medicalRecord)
+
+
+    @PostMapping("/medicalrecords/{patientId}/{doctorId}/{appointmentId}")
+    public ResponseEntity<MedicalRecord> createMedicalRecord(@PathVariable Long patientId, @PathVariable Long doctorId, @PathVariable Long appointmentId, @RequestBody MedicalRecord medicalRecord)
     {
-        return new ResponseEntity<MedicalRecord>(this.doctorService.updateMedicalRecord(patientId, medicalRecord), HttpStatus.OK);
+        return new ResponseEntity<MedicalRecord>(this.doctorService.createMedicalRecord(patientId, doctorId, appointmentId, medicalRecord), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/medicalrecords/{medicalRecordId}")
+    public ResponseEntity<MedicalRecord> updateMedicalRecord(@PathVariable Long medicalRecordId, @RequestBody MedicalRecord medicalRecord)
+    {
+        return new ResponseEntity<MedicalRecord>(this.doctorService.updateMedicalRecord(medicalRecordId, medicalRecord), HttpStatus.OK);
     }
 
 }

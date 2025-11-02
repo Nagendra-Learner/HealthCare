@@ -1,5 +1,5 @@
 <!-- Dashboard -->
-<app-dashboard></app-dashboard>
+<app-dashbaord> </app-dashbaord>
 
 <!-- Appointments Section -->
 <div class="card mt-4 shadow-sm">
@@ -15,6 +15,7 @@
           <th>Status</th>
           <th>Doctor</th>
           <th>Patient</th>
+          <th>Medical Record</th>
         </tr>
       </thead>
       <tbody *ngIf="appointmentList && appointmentList.length > 0; else noData">
@@ -29,6 +30,9 @@
           <td>
             <strong>{{ val.patient.username }}</strong><br>
             <small class="text-muted">{{ val.patient.email }}</small>
+          </td>
+          <td>
+            <button type = "button" (click) = "viewMedicalRecord(val.patient.id, val.doctor.id, medicalRecord.id)">View</button>
           </td>
         </tr>
       </tbody>

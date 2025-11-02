@@ -1,0 +1,47 @@
+<div class="container mt-4">
+  <h2 class="text-center mb-4">Medical Record Details</h2>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="alert alert-danger text-center">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Medical Record Table -->
+  <div *ngIf = "medicalRecord; else noData">
+    <table class="table table-bordered table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>ID</th>
+          <th>Patient Name</th>
+          <th>Doctor Name</th>
+          <th>Diagnosis</th>
+          <th *ngIf = "medicalRecord.prescription">Prescription</th>
+          <th *ngIf = "medicalRecord.notes">Notes</th>
+          <th>Record Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ medicalRecord.id }}</td>
+          <td>{{ medicalRecord.patient.username }}</td>
+          <td>{{ medicalRecord.doctor.username }}</td>
+          <td>{{ medicalRecord.diagnosis }}</td>
+          <td *ngIf = "medicalRecord.prescription">{{ medicalRecord.prescription }}</td>
+          <td *ngIf = "medicalRecord.notes">{{ medicalRecord.notes }}</td>
+          <td>{{ medicalRecord.recordDate | date:'dd-MM-yyyy HH:mm' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+   <!-- Navigation Link -->
+   <div class="text-center">
+    <a routerLink = "/doctor-appointment">Go To Appointments</a>
+  </div>
+  <!-- No Data Template -->
+  <ng-template #noData>
+    <div class="alert alert-warning text-center">
+      No medical record found.
+    </div>
+  </ng-template>
+</div>

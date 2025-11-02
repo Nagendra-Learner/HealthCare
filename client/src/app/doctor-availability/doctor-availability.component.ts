@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpService } from '../../services/http.service';
 import { AuthService } from '../../services/auth.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-doctor-availability',
   templateUrl: './doctor-availability.component.html',
@@ -10,10 +12,10 @@ import { AuthService } from '../../services/auth.service';
 export class DoctorAvailabilityComponent implements OnInit
 {
   availabilityForm!: FormGroup;
-  successMessage = '';
-  errorMessage = '';
+  successMessage: string | null = null;
+  errorMessage: string | null  = null;
 
-  constructor( private fb: FormBuilder, private httpService: HttpService, private authService: AuthService) 
+  constructor( private fb: FormBuilder, private httpService: HttpService, private authService: AuthService, private router: Router) 
   {
   }
 
@@ -24,23 +26,29 @@ export class DoctorAvailabilityComponent implements OnInit
 
   onSubmit(): void 
   {
-    this.successMessage = '';
-    this.errorMessage = '';
+    this.successMessage = null;
+    this.errorMessage = null;
 
     if(this.availabilityForm.valid)
     {
-      const userIdString = localStorage.getItem('userId');
+      const userIdString = localStorage.getItem('user_id');
       const doctorId = userIdString ? parseInt(userIdString, 10) : null;
       const availability = this.availabilityForm.value.availability;
 
-      if(doctorId!==null && !isNaN(doctorId))
+      if(doctorId !== null && !isNaN(doctorId))
       {
+        console.log(doctorId);
         this.httpService.updateDoctorAvailability(doctorId, availability).subscribe({
             next: () => {
               this.successMessage = 'Availability updated successfully.';
+              setTimeout(() => {
+                this.successMessage = null;
+                this.availabilityForm.reset();
+                this.router.navigate(['/dashboard']);
+              }, 2000);
             },
-            error: () => {
-              this.errorMessage = 'Error updating availability!';
+            error: (error: HttpErrorResponse) => {
+              this.handleError(error);
             }
           });
       }
@@ -58,6 +66,28 @@ export class DoctorAvailabilityComponent implements OnInit
   get f()
   {
     return this.availabilityForm.controls;
+  }
+
+  private handleError(error: HttpErrorResponse): void 
+  {
+    console.log(typeof error)
+    console.log(error)
+    if (error.error instanceof ErrorEvent) 
+    {
+      this.errorMessage = `Client-side error: ${error.error.message}`;
+    }
+    else 
+    {
+      if(typeof error.error === "string")
+      {
+        console.log(error.status);
+        this.errorMessage = error.error;
+      }
+      else if(error.error?.message)
+      {
+        this.errorMessage = error.error.message;
+      }
+    }
   }
 
 

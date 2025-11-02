@@ -1,4 +1,4 @@
-<app-dashbaord></app-dashbaord>
+<app-dashbaord> </app-dashbaord>
 <div class="container mt-4">
   <h3 class="mb-3">Appointments</h3>
   <div class="card">
@@ -11,6 +11,7 @@
             <th>Status</th>
             <th>Doctor</th>
             <th>Patient</th>
+            <th>Medical Record</th>
           </tr>
         </thead>
         <tbody>
@@ -26,6 +27,15 @@
               <strong>{{ appointment.patient.username }}</strong><br>
               <small>{{ appointment.patient.email }}</small>
             </td>
+            <td *ngIf = "appointment.medicalRecord; else createBlock">
+              <button type = "button" (click) = "viewMedicalRecord(appointment.medicalRecord.id)">View</button>
+              <button type = "button" (click) = "editMedicalRecord(appointment.patient.id, appointment.medicalRecord.id, appointment.id)">Edit</button>
+            </td>
+            <ng-template #createBlock>
+              <td>
+                <button type = "button" (click) = "createMedicalRecord(appointment.id, appointment.patient.id)">Create</button>
+              </td>
+            </ng-template>
           </tr>
         </tbody>
       </table>

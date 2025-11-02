@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { User } from '../../types/User';
 import { HttpService } from '../../services/http.service';
-
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-registration',
@@ -12,15 +12,13 @@ import { HttpService } from '../../services/http.service';
 export class RegistrationComponent implements OnInit
 {
 
-  user: User = new User(0, '', '', '', "");
+  user!: User;
   itemForm!: FormGroup;
-  successMessage: string = ''; 
-  errorMessage: string = '';
+  successMessage: string|null = null; 
+  errorMessage: string | null = null;
 
   constructor(private fb:FormBuilder, private httpService: HttpService,private router:Router)
-  {
-
-  }
+  {}
 
   ngOnInit(): void 
   {
@@ -28,7 +26,6 @@ export class RegistrationComponent implements OnInit
       username:['',[Validators.required, Validators.pattern(/^[a-zA-Z0-9]+$/)]],
       email:['',[Validators.required, Validators.email]],
       password:['',[Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)]],
-      //password:['',[Validators.required, Validators.pattern(/^[A-za-z0-9]+$/)]],
       role:['',Validators.required],
       specialty: [''],
       availability: ['']
@@ -49,23 +46,18 @@ export class RegistrationComponent implements OnInit
         availabilityControl?.clearValidators();
       }
 
-      specialtyControl?.updateValueAndValidity;
-      availabilityControl?.updateValueAndValidity;
+      specialtyControl?.updateValueAndValidity();
+      availabilityControl?.updateValueAndValidity();
     });
   }
 
   onSubmit()
   {
-    this.successMessage = '';
-    this.errorMessage = '';
+    this.successMessage = null;
+    this.errorMessage = null;
     
     if(this.itemForm.valid)
-    {
-
-      Object.values(this.itemForm.controls).forEach((control) => {
-        control.markAsTouched();
-      });
-      
+    { 
       console.log("itemForm.value = \n" + this.itemForm.value);
 
       let registerObservable;
@@ -76,13 +68,13 @@ export class RegistrationComponent implements OnInit
           registerObservable = this.httpService.registerPatient(this.itemForm.value);
           break;
         case "DOCTOR":
-          registerObservable = this.httpService.registerDoctors(this.itemForm.value);
+          registerObservable = this.httpService.registerDoctor(this.itemForm.value);
           break;
         case "RECEPTIONIST":
           registerObservable = this.httpService.registerReceptionist(this.itemForm.value);
           break;
         default:
-          this.errorMessage = "Invalis Role Selected!";
+          this.errorMessage = "Invalid Role Selected!";
           return;
       }
 
@@ -92,18 +84,11 @@ export class RegistrationComponent implements OnInit
           this.successMessage = "Registration Successful.";
      
           console.log("User value = \n" + this.user);
-          setTimeout(() => {this.successMessage = ""; this.itemForm.reset(); this.router.navigate(['/login'])}, 2000);
+          setTimeout(() => {this.successMessage = null; this.itemForm.reset(); this.router.navigate(['/login'])}, 2000);
         },
-        error: (errorObj) => {
-          this.successMessage = '';
-          if(errorObj instanceof Error)
-          {
-            this.errorMessage = errorObj.message + "!";
-          }
-          else
-          {
-            this.errorMessage = "An unexpected error occurred during registration!";
-          }
+        error: (errorObj : HttpErrorResponse) => {
+          this.successMessage = null;
+          this.handleError(errorObj);
         } });
     }
     else
@@ -116,6 +101,27 @@ export class RegistrationComponent implements OnInit
   get f()
   {
     return this.itemForm.controls;
+  }
+
+  private handleError(error: HttpErrorResponse): void 
+  {
+    this.successMessage = null;
+    if (error.error instanceof ErrorEvent) 
+    {
+      this.errorMessage = `Client-side error: ${error.error.message}`;
+    } 
+    else 
+    {
+      if(typeof error.error === "string")
+        {
+          console.log(error.status);
+          this.errorMessage = error.error;
+        }
+        else if(error.error?.message)
+        {
+          this.errorMessage = error.error.message;
+        }
+    }
   }
 
 }

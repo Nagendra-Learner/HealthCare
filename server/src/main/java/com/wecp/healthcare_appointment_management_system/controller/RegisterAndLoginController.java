@@ -42,14 +42,14 @@ public class RegisterAndLoginController
     @PostMapping("/patient/register")
     public ResponseEntity<Patient> registerPatient(@RequestBody Patient patient)
      {
-        Patient newPatient= userService.registerPatient(patient);
+        Patient newPatient = userService.registerPatient(patient);
         return new ResponseEntity<Patient>(newPatient ,HttpStatus.CREATED);
     }
 
-    @PostMapping("/doctors/register")
+    @PostMapping("/doctor/register")
     public ResponseEntity<Doctor> registerDoctor(@RequestBody Doctor doctor) 
     {
-        Doctor newDoctor= userService.registerDoctor(doctor);
+        Doctor newDoctor = userService.registerDoctor(doctor);
         return new ResponseEntity<Doctor>(newDoctor, HttpStatus.CREATED);
     }
 
@@ -60,36 +60,26 @@ public class RegisterAndLoginController
        return new ResponseEntity<Receptionist>(newReceptionist, HttpStatus.CREATED);
     }
 
-    @PostMapping("/user/login")
-    public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginRequest loginRequest) 
-    {
-    //   login user and return jwt in LoginResponse object
-    //    return 401 unauthorized if authentication fail
-        try{
-
-            authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                    loginRequest.getUsername(), 
-                    loginRequest.getPassword())
-            );
-        }
-        catch(AuthenticationException authEx)
-        {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username (or) password", authEx);
-        }
-
-        UserDetails userDetails= userService.loadUserByUsername(loginRequest.getUsername());
-
-        String jwt = jwtUtil.generateToken(userDetails.getUsername());
-
-        User user= userRepository.findByUsername(userDetails.getUsername()).orElse(null);
-
-        if(user == null)
-        {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found!");
-        }
-
-         LoginResponse loginResponse= new LoginResponse(user.getId(), jwt, user.getUsername(), user.getEmail(), user.getRole());
-         return ResponseEntity.ok(loginResponse);
+@PostMapping("/user/login")
+public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginRequest loginRequest) 
+{
+    try {
+        authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
+        );
     }
+    catch (AuthenticationException ex) {
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username (or) password", ex);
+    }
+
+    UserDetails userDetails = userService.loadUserByUsername(loginRequest.getUsername());
+    String jwt = jwtUtil.generateToken(userDetails.getUsername());
+
+    User user = userRepository.findByUsername(userDetails.getUsername()).get();
+    
+    return ResponseEntity.ok(new LoginResponse(jwt, user.getRole(), user.getId()));
+    
+}
+
+    
 }
