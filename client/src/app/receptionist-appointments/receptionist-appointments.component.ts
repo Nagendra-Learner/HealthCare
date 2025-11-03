@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from '../../services/http.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, ValidationErrors } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { Appointment } from '../../types/Appointment';
+
 
 @Component({
   selector: 'app-receptionist-appointments',
@@ -19,24 +21,86 @@ export class ReceptionistAppointmentsComponent implements OnInit
   showAppointment: boolean=false;
   errorMessage:string|null=null;
 
+  filteredAppointments: Appointment[] = [];
+  doctorFilter: string = '';
+  patientFilter: string = '';
+  dateFilter: string = '';
+
+  filterText: string = '';
+  sortColumn: string = '';
+  sortDirections: {[key: string]: 'asc' | 'desc'}= {};
+  currentSortColumn: string= '';
+
+  currentPage = 1;
+  pageSize = 5;
+
   constructor(private fb: FormBuilder, private http: HttpService, private datePipe: DatePipe)
   {
     this.itemForm= fb.group({
       id:['', Validators.required],
-      time:['', Validators.required]
+      time:['', [Validators.required, this.futureDateValidator]]
     });
   }
 
   ngOnInit(): void {
     this.loadAppointments();
+     this.sortColumn= 'id';
   }
 
   loadAppointments()
   {
-    this.http.getAllAppointments().subscribe(data=>{
+    this.http.fetchAllAppointments().subscribe(data=>{
       this.appointments=data;
+      this.filteredAppointments = this.appointments;
     });
   }
+
+  applyFilter() {
+  const doctor = this.doctorFilter.toLowerCase();
+  const patient = this.patientFilter.toLowerCase();
+  const date = this.dateFilter.toLowerCase();
+
+  this.filteredAppointments = this.appointments.filter(app => {
+    const doctorMatch = app.doctor.username.toLowerCase().startsWith(doctor);
+    const patientMatch = app.patient.username.toLowerCase().startsWith(patient);
+    const dateStr = this.datePipe.transform(app.appointmentTime, 'dd-MMM-yyyy hh:mm a')?.toLowerCase() || '';
+    const dateMatch = dateStr.startsWith(date);
+
+    return doctorMatch && patientMatch && dateMatch;
+  });
+   this.currentPage = 1;
+}
+
+  
+  sortData(column: string) {
+
+    const currentDirection= this.sortDirections[column] || 'desc';
+    const newDirection= currentDirection === 'asc' ? 'desc' : 'asc';
+
+    this.sortDirections={};
+    this.sortDirections[column]= newDirection;
+    this.currentSortColumn= column;
+
+  const getValue = (obj: any, path: string) =>
+    path.split('.').reduce((acc, part) => acc && acc[part], obj);
+
+
+    this.filteredAppointments.sort((a, b) => {
+      const valA = getValue(a, column);
+      const valB = getValue(b, column);
+
+      if (typeof valA === 'string') {
+        return newDirection === 'asc'
+          ? valA.localeCompare(valB)
+          : valB.localeCompare(valA);
+      } else {
+        return newDirection === 'asc'
+          ? valA - valB
+          : valB - valA;
+      }
+    });
+  }
+
 
   editAppointments(appointment: any)
   {
@@ -50,18 +114,10 @@ export class ReceptionistAppointmentsComponent implements OnInit
 
   onSubmit()
   {
-    //const formattedTime= this.datePipe.transform(this.itemForm.value.time, 'yyyy-MM-dd HH:mm:ss');
-    // const formattedTime = this.itemForm.value.time;
-    // console.log(formattedTime);
-    // const { appointmentDate, time } = this.itemForm.value;
-    //   const now = new Date();
-    //   const selectedDateTime = new Date(`${appointmentDate}T${time}`);
+    if(this.itemForm.valid)
+    {
       const formattedTime= this.datePipe.transform(this.itemForm.value.time, 'yyyy-MM-dd HH:mm:ss');
 
-      // if (selectedDateTime < now) {
-      //   this.errorMessage = 'You cannot select a past date or time!';
-      //   return;
-      // }
     this.http.reScheduleAppointment(this.itemForm.value.id, {time: formattedTime || ''}).subscribe({
       next:()=>
         {
@@ -74,6 +130,7 @@ export class ReceptionistAppointmentsComponent implements OnInit
         }
     })
   }
+}
 
   resetForm()
   {
@@ -81,5 +138,35 @@ export class ReceptionistAppointmentsComponent implements OnInit
     this.selectedAppointment=null;
     this.itemForm.reset();
   }
+
+  get totalPages() {
+    return Math.ceil(this.filteredAppointments.length / this.pageSize);
+  }
+
+  get totalPagesArray() {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+  get paginatedAppointments() {
+    const start = (this.currentPage - 1) * this.pageSize;
+    return this.filteredAppointments.slice(start, start + this.pageSize);
+  }
+
+  changePage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
+  }
+
+
+
+  futureDateValidator(control: AbstractControl): ValidationErrors | null {
+  if (!control.value) return null;
+
+  const selectedDateTime = new Date(control.value);
+  const now = new Date();
+
+  return selectedDateTime < now ? { pastDate: true } : null;
+}
 
 }

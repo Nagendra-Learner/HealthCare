@@ -1,28 +1,56 @@
+
 <app-dashbaord></app-dashbaord>
-<div class="container mt-4">
-    <h2>Update Availability</h2>
-
-    <form [formGroup] = "availabilityForm" (ngSubmit) = "onSubmit()">
-      <div class = "form-group">
-        <label for = "availability">Availability</label>
-        <select type = "text" id = "availability" class = "form-control" [ngClass] = "{'is-invalid' : f['availability'].invalid && f['availability'].touched}" formControlName="availability" placeholder="Enter availability (e.g., Yes or No)">
-            <option value = "" disabled>Please select availability</option>
-            <option value = "Yes">Yes</option>
-            <option value = "No">No</option>
-        </select>
-        <div *ngIf = "f['availability']?.invalid && f['availability']?.touched" class = "invalid-feedback">
-            <small *ngIf = "f['availability']?.errors?.['required']">Availability is required.</small>
-        </div>
-      </div>
+ 
+<div class="container my-4">
+ 
+  <div class="card shadow-sm border-0 component-card form-card mx-auto">
     
-      <button type = "submit" class = "btn btn-primary w-100 btn-lg mt-3" [disabled] = "availabilityForm.invalid">Submit</button>
-
-      <div *ngIf = "successMessage" class = "alert alert-success">
-        {{ successMessage }}
-      </div>
-  
-      <div *ngIf = "errorMessage" class = "alert alert-danger">
-          {{ errorMessage }}
-      </div>
+    <div class="card-header card-header-custom">
+      <h4 class="mb-0 d-flex align-items-center">
+        <i class="bi bi-calendar-check me-2"></i>
+        Update Availability
+      </h4>
+    </div>
+ 
+    <div class="card-body p-4">
+ 
+      <form [formGroup]="availabilityForm" (ngSubmit)="onSubmit()">
+ 
+        <div class="mb-3">
+          <label for="availability" class="form-label fw-semibold">Availability</label>
+          
+          <select 
+            id="availability" 
+            class="form-select" 
+            [ngClass]="{'is-invalid' : f['availability'].invalid && f['availability'].touched}" 
+            formControlName="availability">
+            <option value="" disabled>Please select availability</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+ 
+          <div *ngIf="f['availability']?.invalid && f['availability']?.touched" class="invalid-feedback">
+            <small *ngIf="f['availability']?.errors?.['required']">Availability is required.</small>
+          </div>
+        </div>
+ 
+        <button type="submit" class="btn btn-primary w-100 btn-lg mt-3" [disabled]="availabilityForm.invalid">
+          <i class="bi bi-check-circle-fill me-2"></i>
+          Submit
+        </button>
+ 
+        <div *ngIf="successMessage" class="alert alert-success d-flex align-items-center mt-3">
+          <i class="bi bi-check-circle-fill me-2"></i>
+          <div>{{ successMessage }}</div>
+        </div>
+ 
+        <div *ngIf="errorMessage" class="alert alert-danger d-flex align-items-center mt-3">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i>
+          <div>{{ errorMessage }}</div>
+        </div>
+        
       </form>
     </div>
+  </div>
+</div>
+ 

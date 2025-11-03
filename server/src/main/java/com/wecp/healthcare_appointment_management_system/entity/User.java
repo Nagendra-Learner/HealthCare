@@ -1,7 +1,6 @@
 package com.wecp.healthcare_appointment_management_system.entity;
 
 import javax.persistence.*;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
-@Table(name = "users") // do not change table name
+@Table(name = "users")
 public class User 
 {
     @Id

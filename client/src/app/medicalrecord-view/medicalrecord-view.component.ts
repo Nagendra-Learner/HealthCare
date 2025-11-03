@@ -17,17 +17,18 @@ export class MedicalRecordViewComponent
     errorMessage: string | null = null;
 
     constructor(private httpService: HttpService, private route: ActivatedRoute)
-    {
-    }
+    {}
+    
     ngOnInit(): void
     {
+      console.log(this.medicalRecordId);
       this.medicalRecordId = Number(this.route.snapshot.paramMap.get('medicalRecordId'));
       this.getMedicalRecords();
     }
 
     getMedicalRecords()
     {
-      this.httpService.viewMedicalRecordById(this.medicalRecordId).subscribe({
+      this.httpService.fetchMedicalRecordById(this.medicalRecordId).subscribe({
         next: (data) => {
           this.medicalRecord = data;
         },

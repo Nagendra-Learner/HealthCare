@@ -14,10 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.Collections;
 import java.util.Optional;
 
@@ -62,6 +60,7 @@ public class UserService implements UserDetailsService {
         }
 
         doctor.setPassword(passwordEncoder.encode(doctor.getPassword()));
+        
         return doctorRepository.save(doctor);
         
     }
@@ -89,6 +88,7 @@ public class UserService implements UserDetailsService {
         }
 
         patient.setPassword(passwordEncoder.encode(patient.getPassword()));
+
         return patientRepository.save(patient);
     }
 
@@ -115,11 +115,13 @@ public class UserService implements UserDetailsService {
         }
 
         receptionist.setPassword(passwordEncoder.encode(receptionist.getPassword()));
+
         return receptionistRepository.save(receptionist);
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username)
+    {
         Optional<User> user = this.userRepository.findByUsername(username);
         if(user.isPresent())
         {

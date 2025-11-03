@@ -1,0 +1,71 @@
+
+:host {
+  --primary-color: #115f73;
+  --primary-dark: #0e4a5a;
+  --primary-light-hover: rgba(22, 118, 142, 0.1);
+  --text-color: #ffffff;
+  --border-radius: 12px;
+  --border-color: #dee2e6;
+}
+ 
+.schedule-page-container {
+  min-height: calc(100vh - 60px); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  background: url('/assets/receptionist1.jpg') no-repeat center center;
+  background-size: cover;
+}
+ 
+.schedule-card {
+  width: 100%;
+  max-width: 600px; 
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: var(--border-radius);
+  border: none;
+  backdrop-filter: blur(5px);
+}
+ 
+.schedule-card-header {
+  color: var(--primary-dark);
+  text-align: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+ 
+.schedule-card-header h4 {
+  font-weight: 600;
+}
+ 
+.form-label {
+  color: #333;
+}
+ 
+ 
+.form-select:focus,
+.form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.25rem var(--primary-light-hover);
+}
+ 
+.form-control[readonly] {
+  background-color: #e9ecef;
+  opacity: 1;
+}
+ 
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+.btn-primary:hover {
+  background-color: var(--primary-dark);
+  border-color: var(--primary-dark);
+}
+.btn-primary:disabled {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  opacity: 0.65;
+}
+ 

@@ -1,64 +1,82 @@
-<!-- Header -->
-<div class="text-center mb-3 mt-4">
-  <h1 class="fw-bold">Healthcare Appointment Management System</h1>
-</div>
-
-<!-- Navigation Bar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark shadow-sm navbar-hospital">
   <div class="container-fluid">
-    <!-- Brand -->
-    <a class="navbar-brand" routerLink="/dashboard">HAM System</a>
-
-    <!-- Toggle Button for Mobile -->
+    <a class="navbar-brand d-flex align-items-center" routerLink="/dashboard">
+      <img src="assets/1.png" alt="Logo" class="logo">
+    </a>
+ 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
       aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-
-    <!-- Menu Items -->
+ 
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav me-auto">
-        
-        <!-- Doctor Menu -->
+      <ul class="navbar-nav ms-auto">
+ 
         <ng-container *ngIf="role === 'DOCTOR'">
-          <li class = "nav-item me-3">
-            <a class="nav-link" routerLink="/doctor-appointment">Doctor Appointment</a>
-          </li>
-          <li class = "nav-item me-3">
-          <a class="nav-link" routerLink="/doctor-availability">Doctor Availability</a>
+          <li class="nav-item">
+            <a class="nav-link d-flex align-items-center gap-2" routerLink="/doctor-appointment">
+              <i class="bi bi-calendar2-check"></i> Appointments
+            </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" (click) = "onLogout()">Logout</a>
+            <a class="nav-link d-flex align-items-center gap-2" routerLink="/doctor-availability">
+              <i class="bi bi-clock-history"></i> Manage Availability
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link btn-logout d-flex align-items-center gap-2" (click)="onLogout()">
+              <i class="bi bi-box-arrow-right"></i> Logout
+            </a>
           </li>
         </ng-container>
-
-        <!-- Receptionist Menu -->
+ 
         <ng-container *ngIf="role === 'RECEPTIONIST'">
-          <li class="nav-item me-3">
-            <a class="nav-link" routerLink="/receptionist-appointments">All Appointments</a>
-          </li>
-          <li class="nav-item me-3">
-            <a class="nav-link" routerLink="/receptionist-schedule-appointments">Schedule Appointment</a>
+          <li class="nav-item">
+            <a class="nav-link d-flex align-items-center gap-2" routerLink="/receptionist-appointments">
+              <i class="bi bi-journals"></i> Appointments
+            </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" (click) = "onLogout()">Logout</a>
+            <a class="nav-link d-flex align-items-center gap-2" routerLink="/receptionist-schedule-appointments">
+              <i class="bi bi-calendar-plus"></i> Book Appointment
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link btn-logout d-flex align-items-center gap-2" (click)="onLogout()">
+              <i class="bi bi-box-arrow-right"></i> Logout
+            </a>
           </li>
         </ng-container>
-
-        <!-- Patient Menu -->
+ 
         <ng-container *ngIf="role === 'PATIENT'">
-          <li class="nav-item me-3">
-            <a class="nav-link" routerLink="/patient-appointment">Patient Appointment</a>
-          </li>
-          <li class="nav-item me-3">
-            <a class="nav-link" routerLink="/schedule-appointment">Schedule Appointment</a>
+          <li class="nav-item">
+            <a class="nav-link d-flex align-items-center gap-2" routerLink="/patient-appointment">
+              <i class="bi bi-person-check"></i> Appointments
+            </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" (click) = "onLogout()">Logout</a>
+            <a class="nav-link d-flex align-items-center gap-2" routerLink="/schedule-appointment">
+              <i class="bi bi-calendar-plus"></i> Book Appointment
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link btn-logout d-flex align-items-center gap-2" (click)="onLogout()">
+              <i class="bi bi-box-arrow-right"></i> Logout
+            </a>
           </li>
         </ng-container>
-
+ 
       </ul>
     </div>
   </div>
 </nav>
+
+<!-- Dashboard Image (conditionally visible) -->
+<div *ngIf="showDashboardImage" class="position-relative" style="width:100%; height: calc(100vh - 50px); overflow: hidden;">
+  <img src="assets/home_page_image.jpg" alt="Dashboard Image" class="img-fluid w-100" style="height: 100%; object-fit: cover; opacity: 1;">
+  <div class="position-absolute top-50 start-0 translate-middle-y text-white fw-bold display-4 ps-5" style="z-index: 10; text-shadow: 2px 2px 8px rgba(0,0,0,0.7); max-width: 600px;">
+    "Your Health is Your Wealth - manage it Wisely."
+  <br>
+  </div>
+</div>
+ 

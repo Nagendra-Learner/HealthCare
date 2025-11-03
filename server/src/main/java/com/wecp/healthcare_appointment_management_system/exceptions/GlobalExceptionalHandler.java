@@ -40,16 +40,10 @@ public class GlobalExceptionalHandler
         return new ResponseEntity<>(errorResponse, rstEx.getStatus());
     }
 
-    // @ExceptionHandler(SQLException.class)
-    // public ResponseEntity<String> handleSQLException(SQLException sqlEx)
-    // {
-    //     return new ResponseEntity<>(sqlEx.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-    // }
-
-    // @ExceptionHandler(RuntimeException.class)
-    // public ResponseEntity<String> handleRuntimeException(RuntimeException rtEx)
-    // {
-    //     return new ResponseEntity<>(rtEx.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-    // }
+    @ExceptionHandler(SQLException.class)
+    public ResponseEntity<String> handleSQLException(SQLException sqlEx)
+    {
+        return new ResponseEntity<>(sqlEx.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
 }

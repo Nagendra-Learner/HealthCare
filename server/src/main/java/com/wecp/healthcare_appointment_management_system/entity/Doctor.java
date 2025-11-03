@@ -14,6 +14,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "doctors")
 public class Doctor extends User
 {
    private String specialty;

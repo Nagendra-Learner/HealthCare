@@ -5,17 +5,27 @@ import { Appointment } from '../../types/Appointment';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MedicalRecord } from '../../types/MedicalRecord';
 import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-patient-appointment',
   templateUrl: './patient-appointment.component.html',
-  styleUrls: ['./patient-appointment.component.scss']
+  styleUrls: ['./patient-appointment.component.scss'],
+  providers: [DatePipe]
 })
 export class PatientAppointmentComponent implements OnInit {
   appointmentList: Appointment[] = [];
   errorMessage: string | null = null;
   medicalRecord!: MedicalRecord;
-  constructor(private router: Router, private httpService: HttpService) {
+
+  currentPage = 1;
+  pageSize = 5;
+
+  sortColumn: string = '';
+  sortDirection: 'asc' | 'desc' = 'asc';
+  filterDoctor: string = '';
+  filterTime: string = '';
+  constructor(private router: Router, private httpService: HttpService, private datePipe: DatePipe) {
   
    }
 
@@ -25,19 +35,9 @@ export class PatientAppointmentComponent implements OnInit {
   }
 
 
-  viewMedicalRecord(patientId:number | undefined, doctorId: number | undefined, medicalRecordId: number | undefined)
+  viewMedicalRecord(medicalRecordId: number | undefined)
   {
-    if(patientId !== undefined && doctorId !== undefined)
-    {
-      this.httpService.viewMedicalRecordByPatientIdDoctorId(patientId, doctorId).subscribe({
-        next: (medicalRecord: MedicalRecord) => {
-          this.medicalRecord = medicalRecord;
-        },
-        error: (error) => {
-          this.handleError(error);
-        }
-      });
-    }
+    console.log(medicalRecordId);
     if(medicalRecordId !== undefined)
     {
       this.router.navigate([`/medicalRecords/view/${medicalRecordId}`]);
@@ -47,19 +47,18 @@ export class PatientAppointmentComponent implements OnInit {
       this.errorMessage = "Medical Record with ID: " + medicalRecordId + " not found."; 
     }
   }
+  
   getAppointments() {
     const userIdString = localStorage.getItem('user_id');
 
-    // Parse userId to an integer, if it exists
     const userId = userIdString ? parseInt(userIdString, 10) : null;
-    this.appointmentList
     if(userId != null)
     {
-      this.httpService.getAppointmentByPatient(userId).subscribe
+      this.httpService.fetchAppointmentsByPatientId(userId).subscribe
       ({
         next: (data) =>{
           this.appointmentList = data;
-          console.log(this.appointmentList);
+          console.table(this.appointmentList);
         },
         error: (error: HttpErrorResponse) => {
           this.handleError(error);
@@ -68,6 +67,84 @@ export class PatientAppointmentComponent implements OnInit {
     }
   }
 
+  get filteredAppointments(): Appointment[] {
+    let filtered = [...this.appointmentList];
+    console.table(filtered);
+    if (this.filterDoctor.trim()) {
+      filtered = filtered.filter(app =>
+        app.doctor.username.toLowerCase().startsWith(this.filterDoctor.toLowerCase())
+      );
+    }
+
+    if (this.filterTime.trim()) {
+      filtered = filtered.filter(app => {
+        const formattedDate = this.datePipe.transform(app.appointmentTime, 'dd-MMM-yyyy hh:mm a');
+        return formattedDate?.toLowerCase().startsWith(this.filterTime.toLowerCase());
+      });
+    }
+
+    if (this.sortColumn) {
+      const getValue = (obj: any, path: string): any =>
+        path.split('.').reduce((acc, part) => acc && acc[part], obj);
+
+      const columnMap: { [key: string]: string } = {
+        id: 'id',
+        appointmentTime: 'appointmentTime',
+        status: 'status',
+        doctor: 'doctor.username',
+        patient: 'patient.username'
+      };
+
+      const path = columnMap[this.sortColumn];
+
+      filtered = filtered.sort((a, b) => {
+        let aVal = getValue(a, path);
+        let bVal = getValue(b, path);
+
+        if (this.sortColumn === 'appointmentTime') {
+          aVal = new Date(aVal).getTime();
+          bVal = new Date(bVal).getTime();
+        }
+
+        if (typeof aVal === 'string') aVal = aVal.toLowerCase();
+        if (typeof bVal === 'string') bVal = bVal.toLowerCase();
+
+        if (aVal < bVal) return this.sortDirection === 'asc' ? -1 : 1;
+        if (aVal > bVal) return this.sortDirection === 'asc' ? 1 : -1;
+        return 0;
+      });
+    }
+
+    return filtered;
+  }
+
+  setSort(column: string) {
+    if (this.sortColumn === column) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortColumn = column;
+      this.sortDirection = 'asc';
+    }
+  }
+
+  get totalPages() {
+    return Math.ceil(this.filteredAppointments.length / this.pageSize);
+  }
+
+  get totalPagesArray() {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+  get paginatedAppointments() {
+    const start = (this.currentPage - 1) * this.pageSize;
+    return this.filteredAppointments.slice(start, start + this.pageSize);
+  }
+
+  changePage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
+  }
 
 
   private handleError(error: HttpErrorResponse): void 

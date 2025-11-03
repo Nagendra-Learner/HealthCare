@@ -1,69 +1,144 @@
-<!-- Dashboard -->
+
 <app-dashbaord></app-dashbaord>
-
-<!-- Appointments Section -->
-<div class="container mt-4">
-  <h3 class="mb-3">Appointments</h3>
-  <div class="card shadow-sm">
+ 
+<div class="container my-4">
+  
+  <div class="card shadow-sm border-0 component-card">
+ 
+    <div class="card-header card-header-custom d-flex flex-wrap justify-content-between align-items-center">
+      
+      <h4 class="mb-0 d-flex align-items-center">
+        <i class="bi bi-calendar2-week me-2"></i>
+        Appointments
+      </h4>
+      
+      <div class="d-flex flex-wrap align-items-center mt-2 mt-md-0 gap-2">
+        
+        <div class="input-group input-group-sm">
+          <span class="input-group-text bg-light border-0">
+            <i class="bi bi-person-check"></i>
+          </span>
+          <input type="text" class="form-control border-0" placeholder="Filter by Doctor" [(ngModel)]="doctorFilter" (input)="applyFilter()" />
+        </div>
+        
+        <div class="input-group input-group-sm">
+          <span class="input-group-text bg-light border-0">
+            <i class="bi bi-person"></i>
+          </span>
+          <input type="text" class="form-control border-0" placeholder="Filter by Patient" [(ngModel)]="patientFilter" (input)="applyFilter()" />
+        </div>
+ 
+        <div class="input-group input-group-sm">
+          <span class="input-group-text bg-light border-0">
+            <i class="bi bi-calendar-event"></i>
+          </span>
+          <input type="text" class="form-control border-0" placeholder="Filter by Date..." [(ngModel)]="dateFilter" (input)="applyFilter()"/>
+        </div>
+      </div>
+    </div>
+ 
     <div class="card-body p-0">
-      <table class="table table-bordered table-hover mb-0">
-        <thead class="thead-dark">
-          <tr>
-            <th>Appointment Id</th>
-            <th>Appointment Time</th>
-            <th>Status</th>
-            <th>Doctor</th>
-            <th>Patient</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody *ngIf="appointments && appointments.length > 0; else noData">
-          <tr *ngFor="let appointment of appointments">
-            <td>{{ appointment.id }}</td>
-            <td>{{ appointment.appointmentTime | date:'dd-MMM-yyyy hh:mm a' }}</td>
-            <td>{{ appointment.status }}</td>
-            <td>
-              <strong>{{ appointment.doctor.username }}</strong><br>
-              <small class="text-muted">{{ appointment.doctor.email }}</small>
-            </td>
-            <td>
-              <strong>{{ appointment.patient.username }}</strong><br>
-              <small class="text-muted">{{ appointment.patient.email }}</small>
-            </td>
-            <td>
-              <button class="btn btn-warning btn-sm fw-bold" (click)="editAppointments(appointment)">
-                Reschedule
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <!-- No Data Template -->
+      
+      <div *ngIf="paginatedAppointments && paginatedAppointments.length > 0; else noData">
+        
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-header-custom">
+            <tr>
+              <th scope="col" (click)="sortData('id')">Appt. Id <span *ngIf="sortDirections['id']"> {{ sortDirections['id'] === 'asc' ? '↑' : '↓' }}</span> </th>
+              <th scope="col" (click)="sortData('appointmentTime')">Appointment Time <span *ngIf="sortDirections['appointmentTime']">{{ sortDirections['appointmentTime'] === 'asc' ? '↑' : '↓' }}</span></th>
+              <th scope="col" (click)="sortData('status')">Status <span *ngIf="sortDirections['status']">{{ sortDirections['status'] === 'asc' ? '↑' : '↓' }}</span></th>
+              <th scope="col" (click)="sortData('doctor.username') ">Doctor <span *ngIf="sortDirections['doctor.username']">{{ sortDirections['doctor.username'] === 'asc' ? '↑' : '↓' }}</span></th>
+              <th scope="col" (click)="sortData('patient.username')">Patient <span *ngIf="sortDirections['patient.username']">{{ sortDirections['patient.username'] === 'asc' ? '↑' : '↓' }}</span></th>
+              <th scope="col" class="text-center">Action</th>
+            </tr>
+          </thead>
+          
+          <tbody>
+            <tr *ngFor="let appointment of paginatedAppointments">
+              <td class="fw-semibold">#{{ appointment.id }}</td>
+              <td>{{ appointment.appointmentTime | date:'dd-MMM-yyyy hh:mm a' }}</td>
+              
+              <td><span class="badge status-badge">{{ appointment.status }}</span></td>
+              
+              <td>
+                <strong>{{ appointment.doctor.username }}</strong><br>
+                <small class="text-muted">{{ appointment.doctor.email }}</small>
+              </td>
+              <td>
+                <strong>{{ appointment.patient.username }}</strong><br>
+                <small class="text-muted">{{ appointment.patient.email }}</small>
+              </td>
+              
+              <td class="text-center">
+                <button class="btn btn-outline-warning btn-sm d-flex align-items-center gap-1 mx-auto" (click)="editAppointments(appointment)">
+                  <i class="bi bi-clock-history"></i>
+                  Reschedule
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+ 
+        <nav>
+          <ul class="pagination justify-content-center pt-3">
+            <li class="page-item" [class.disabled]="currentPage === 1">
+              <a class="page-link" (click)="changePage(currentPage - 1)">Previous</a>
+            </li>
+            <li class="page-item" *ngFor="let page of totalPagesArray" [class.active]="page === currentPage">
+              <a class="page-link" (click)="changePage(page)">{{ page }}</a>
+            </li>
+            <li class="page-item" [class.disabled]="currentPage === totalPages">
+              <a class="page-link" (click)="changePage(currentPage + 1)">Next</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+ 
       <ng-template #noData>
-        <div class="p-3 text-center text-muted">
-          No appointments found.
+        <div class="p-5 text-center text-muted">
+          <i class="bi bi-inbox" style="font-size: 3rem;"></i>
+          <h5 class="mt-3">No Appointments Found</h5>
+          <p>There are no appointments matching your criteria.</p>
         </div>
       </ng-template>
     </div>
   </div>
-
-  <!-- Reschedule Form -->
-  <div *ngIf="showAppointment" class="card mt-4 shadow-sm">
-    <div class="card-header bg-light fw-bold">Reschedule Appointment</div>
-    <div class="card-body">
+ 
+  <div *ngIf="showAppointment" class="card mt-4 shadow-sm border-0 component-card form-card mx-auto">
+    <div class="card-header card-header-custom">
+      <h4 class="mb-0 d-flex align-items-center">
+        <i class="bi bi-calendar-event me-2"></i>
+        Reschedule Appointment
+      </h4>
+    </div>
+    <div class="card-body p-4">
       <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
+        
         <div class="mb-3">
-          <label class="form-label">Appointment Id</label>
+          <label class="form-label fw-semibold">Appointment Id</label>
           <input type="number" class="form-control" formControlName="id" readonly>
         </div>
+        
         <div class="mb-3">
-          <label class="form-label">Appointment Time</label>
-          <input type="datetime-local" class="form-control" formControlName="time">
+          <label class="form-label fw-semibold">New Appointment Time</label>
+          <input 
+            type="datetime-local" 
+            class="form-control" 
+            formControlName="time"
+            [ngClass]="{'is-invalid': itemForm.get('time')?.hasError('pastDate') && itemForm.get('time')?.touched}">
+          
+          <div *ngIf="itemForm.get('time')?.hasError('pastDate') && itemForm.get('time')?.touched" class="invalid-feedback">
+            You cannot select a past date or time!
+          </div>
         </div>
-        <button type="submit" class="btn btn-dark w-100">Submit</button>
+        
+        <button type="submit" class="btn btn-primary btn-lg w-100 mt-3" [disabled]="itemForm.invalid">
+          <i class="bi bi-check-circle-fill me-2"></i>
+          Submit
+        </button>
       </form>
     </div>
   </div>
+ 
 </div>
-``
+ 

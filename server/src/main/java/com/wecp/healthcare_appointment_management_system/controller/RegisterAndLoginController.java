@@ -56,30 +56,31 @@ public class RegisterAndLoginController
     @PostMapping("/receptionist/register")
     public ResponseEntity<Receptionist> registerReceptionist(@RequestBody Receptionist receptionist) 
     {
-       Receptionist newReceptionist= userService.registerReceptionist(receptionist);
+       Receptionist newReceptionist = userService.registerReceptionist(receptionist);
        return new ResponseEntity<Receptionist>(newReceptionist, HttpStatus.CREATED);
     }
 
-@PostMapping("/user/login")
-public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginRequest loginRequest) 
-{
-    try {
-        authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
-        );
-    }
-    catch (AuthenticationException ex) {
-        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username (or) password", ex);
-    }
+    @PostMapping("/user/login")
+    public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginRequest loginRequest) 
+    {
 
-    UserDetails userDetails = userService.loadUserByUsername(loginRequest.getUsername());
-    String jwt = jwtUtil.generateToken(userDetails.getUsername());
+        try {
+            authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
+            );
+        }
+        catch (AuthenticationException ex) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username (or) password", ex);
+        }
 
-    User user = userRepository.findByUsername(userDetails.getUsername()).get();
-    
-    return ResponseEntity.ok(new LoginResponse(jwt, user.getRole(), user.getId()));
-    
-}
+        UserDetails userDetails = userService.loadUserByUsername(loginRequest.getUsername());
+        String jwt = jwtUtil.generateToken(userDetails.getUsername());
+
+        User user = userRepository.findByUsername(userDetails.getUsername()).get();
+        
+        return ResponseEntity.ok(new LoginResponse(jwt, user.getRole(), user.getId()));
+        
+    }
 
     
 }

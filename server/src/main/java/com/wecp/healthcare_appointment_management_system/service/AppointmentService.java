@@ -10,6 +10,7 @@ import com.wecp.healthcare_appointment_management_system.exceptions.TimeConflict
 import com.wecp.healthcare_appointment_management_system.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -25,13 +26,18 @@ public class AppointmentService
     @Autowired
     private DoctorRepository doctorRepository;
 
-    public List<Appointment> getAppointments()
+    public List<Appointment> getAllAppointments()
     {
         return this.appointmentRepository.findAll();
     }
 
-    public Appointment scheduleAppointments(Long patientId, Long doctorId, TimeDto timeDto)
+    public Appointment scheduleAppointment(Long patientId, Long doctorId, TimeDto timeDto)
     {
+        if(timeDto == null || timeDto.getTime() == null)
+        {
+            throw new EntityNotFoundException("No Date or time is found in the sent request!");
+        }
+        
         Patient patient = patientRepository.findById(patientId).orElse(null);
         Doctor doctor = doctorRepository.findById(doctorId).orElse(null);
 
@@ -44,18 +50,24 @@ public class AppointmentService
             throw new EntityNotFoundException("Doctor with ID: " + doctorId + " not found.");
         }
 
-        List<Appointment> existingAppointments = appointmentRepository.getAppointmentByDoctorId(doctorId);
+        //List<Appointment> existingAppointments = appointmentRepository.getAppointmentByDoctorId(doctorId);
         if(timeDto.getTime() == null)
         {
             throw new IllegalArgumentException("Invalid Time Format");
         }
+
         LocalDateTime appointmentTime = timeDto.getTime();
 
-        for(Appointment existing: existingAppointments)
+        List<Appointment> existingAppointments = appointmentRepository.findAll();
+
+        if(!existingAppointments.isEmpty())
         {
-            if(existing.getAppointmentTime().equals(appointmentTime))
+            for(Appointment existing: existingAppointments)
             {
-                throw new TimeConflictException("Doctor with ID: " + doctorId + " already has an appointment at " + appointmentTime);
+                if(existing.getAppointmentTime().equals(appointmentTime))
+                {
+                    throw new TimeConflictException("Doctor with ID: " + doctorId + " already has an appointment at " + appointmentTime);
+                 }
             }
         }
 
@@ -64,6 +76,7 @@ public class AppointmentService
         appointment.setDoctor(doctor);
         appointment.setAppointmentTime(appointmentTime);
         appointment.setStatus(AppointmentStatus.SCHEDULED.name());
+
         return this.appointmentRepository.save(appointment);
 
     }
@@ -93,16 +106,21 @@ public class AppointmentService
     }
 
     
-    public Appointment rescheduleAppointment(Long appointmentId, TimeDto time) 
+    public Appointment rescheduleAppointment(Long appointmentId, TimeDto timeDto) 
     {
-         Appointment appointment = appointmentRepository.findById(appointmentId).orElse(null);
+        if(timeDto == null || timeDto.getTime() == null)
+        {
+            throw new EntityNotFoundException("No Date or time is found in the sent request!");
+        }
 
-         if (appointment == null) 
-         {
+        Appointment appointment = appointmentRepository.findById(appointmentId).orElse(null);
+
+        if (appointment == null) 
+        {
             throw new EntityNotFoundException("Appointment with ID: " + appointmentId + " not found.");
-         }
+        }
 
-        appointment.setAppointmentTime(time.getTime());
+        appointment.setAppointmentTime(timeDto.getTime());
         appointment.setStatus(AppointmentStatus.RESCHEDULED.name());
 
         return appointmentRepository.save(appointment);

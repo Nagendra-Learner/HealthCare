@@ -4,9 +4,7 @@ public class TimeConflictException extends RuntimeException
 {
 
     public TimeConflictException()
-    {
-
-    }
+    {}
     
     public TimeConflictException(String message)
     {

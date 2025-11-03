@@ -14,7 +14,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 import com.wecp.healthcare_appointment_management_system.jwt.JwtRequestFilter;
 
 @Configuration
@@ -50,6 +49,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/doctor/**").hasAuthority("DOCTOR")
                 .antMatchers("/api/patient/**").hasAuthority("PATIENT")
                 .antMatchers("/api/receptionist/**").hasAuthority("RECEPTIONIST")
+                .antMatchers("/api/appointment/**").hasAnyAuthority("DOCTOR", "PATIENT", "RECEPTIONIST")
+                .antMatchers("/api/medicalRecord/**").hasAnyAuthority("DOCTOR", "PATIENT", "RECEPTIONIST")
 
                 .anyRequest().authenticated()
                 .and()

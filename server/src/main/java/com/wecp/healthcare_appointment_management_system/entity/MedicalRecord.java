@@ -1,9 +1,8 @@
 package com.wecp.healthcare_appointment_management_system.entity;
 
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +14,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Table(name = "medical_records")
 public class MedicalRecord 
 {   
@@ -28,8 +28,7 @@ public class MedicalRecord
     @ManyToOne(cascade = CascadeType.MERGE)
     private Doctor doctor;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JsonBackReference
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "appointment_id")
     private Appointment appointment;
 

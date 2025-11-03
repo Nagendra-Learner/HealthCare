@@ -1,10 +1,6 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Appointment } from '../../types/Appointment';
-import { HttpService } from '../../services/http.service';
-import { Doctor } from '../../types/Doctor';
 import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd} from '@angular/router';
 
 @Component({
   selector: 'app-dashbaord',
@@ -14,15 +10,26 @@ import { Router } from '@angular/router';
 export class DashbaordComponent 
 {
   role!: string | null;
-  
-  constructor(private authService: AuthService, private router: Router)
-  {
+  showDashboardImage = true;
+
+  constructor(private authService: AuthService, private router: Router) {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.showDashboardImage = event.url === '/dashboard';
+      }
+    });
   }
 
   ngOnInit(): void
   {
+    if(!this.authService.getLoginStatus)
+    {
+      this.router.navigate(['/login']);
+    }
+
     this.role = this.authService.getRole;
-    console.log("Role = " + this.role);
+    console.log( " Role = " + this.role);
+
   }
 
   onLogout()
@@ -30,5 +37,7 @@ export class DashbaordComponent
     this.authService.logout();
     this.router.navigate(['/login']);
   }
+
+  
 
 }

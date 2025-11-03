@@ -1,0 +1,108 @@
+
+:host {
+  --primary-color: #115f73;
+  --primary-dark: #0e4a5a;
+  --primary-light-hover: rgba(22, 118, 142, 0.1); 
+  --text-color: #ffffff;
+  --border-radius: 8px;
+  --border-color: #dee2e6;    
+  --table-header-bg: #f8f9fa;
+}
+ 
+/* Card Styling */
+.component-card {
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+ 
+/* Card Header */
+.card-header-custom {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  border-bottom: none;
+  padding: 1rem 1.25rem;
+}
+ 
+.card-header-custom h4 {
+  font-weight: 600;
+}
+ 
+.input-group-sm .form-control,
+.input-group-sm .input-group-text {
+  border-radius: 6px;
+}
+ 
+.input-group-sm .form-control:focus {
+  box-shadow: 0 0 0 0.25rem var(--primary-light-hover);
+  border-color: var(--primary-color);
+}
+ 
+.btn-light {
+  border-radius: 6px;
+}
+ 
+
+.table-header-custom th {
+  background-color: var(--table-header-bg);
+  font-weight: 600;
+  color: #333;
+  padding: 1rem 1.25rem;
+}
+ 
+.table-hover tbody tr:hover {
+  background-color: var(--primary-light-hover);
+}
+ 
+.table td, .table th {
+  padding: 1rem 1.25rem;
+}
+ 
+.status-badge {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  font-weight: 500;
+  padding: 0.4em 0.75em;
+  font-size: 0.75rem;
+}
+ 
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+.btn-primary:hover {
+  background-color: var(--primary-dark);
+  border-color: var(--primary-dark);
+}
+ 
+.btn-outline-primary {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+.btn-outline-primary:hover {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+}
+ 
+.pagination .page-link {
+  color: var(--primary-color);
+  border-radius: 6px;
+  margin: 0 3px;
+  border: none;
+  cursor: pointer;
+}
+.pagination .page-link:hover {
+  background-color: var(--primary-light-hover);
+}
+ 
+.pagination .page-item.active .page-link {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--text-color);
+}
+ 
+.pagination .page-item.disabled .page-link {
+  color: #6c757d;
+  background-color: transparent;
+}
+ 

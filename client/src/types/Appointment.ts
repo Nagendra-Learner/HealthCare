@@ -11,13 +11,4 @@ export interface Appointment
     status: string;
     medicalRecord: MedicalRecord;
 
-    // constructor( id: number, patient: Patient, doctor: Doctor, appointmentTime: Date, status: string)
-    // {
-    //     this.id = id;
-    //     this.patient = patient;
-    //     this.doctor = doctor;
-    //     this.appointmentTime = appointmentTime;
-    //     this.status = status;
-    // }
-
 }

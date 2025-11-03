@@ -1,11 +1,11 @@
 <div class="container-fluid vh-100 d-flex justify-content-center align-items-center bg-light">
   <div class="row w-100 shadow-lg rounded overflow-hidden">
-        <!-- Left Side: Form -->
-        <div class="col-md-6 bg-white p-3 p-md-5 d-flex flex-column justify-content-center">
-          <h3 class="mb-4 text-center">HEALTHCARE APPOINTMENT MANAGEMENT SYSTEM</h3>
+    
+    <div class="col-md-6 bg-white p-5 d-flex flex-column justify-content-center">
+      <h3 class="h4 text-center fw-bold mb-2">HEALTHCARE APPOINTMENT MANAGEMENT SYSTEM</h3>
 
           <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
-            <!-- Username -->
+        
             <div class="mb-3">
               <label for="username" class="form-label"><span style="color: red;">*</span> Username</label>
               <input type="text" class="form-control" [ngClass]="{'is-invalid': f['username'].invalid && f['username'].touched}" id="username" formControlName="username">
@@ -15,7 +15,7 @@
               </div>
             </div>
 
-            <!-- Email -->
+            
             <div class="mb-3">
               <label for="email" class="form-label"><span style="color: red;">*</span> Email address</label>
               <input type="email" class="form-control" [ngClass]="{'is-invalid': f['email'].invalid && f['email'].touched}" id="email" formControlName="email">
@@ -25,7 +25,7 @@
               </div>
             </div>
 
-            <!-- Password -->
+           
             <div class="mb-3">
               <label for="password" class="form-label"><span style="color: red;">*</span> Password</label>
               <input type="password" class="form-control" [ngClass]="{'is-invalid': f['password'].invalid && f['password'].touched}" id="password" formControlName="password">
@@ -35,7 +35,7 @@
               </div>
             </div>
 
-            <!-- Role -->
+           
             <div class="mb-3">
               <label for = "role" class="form-label"><span style="color: red;">*</span> Role</label>
               <select class = "form-select" [ngClass]="{'is-invalid': f['role'].invalid && f['role'].touched}" formControlName="role" id="role">
@@ -49,7 +49,7 @@
               </div>
             </div>
 
-            <!-- Specialty (Visible only for DOCTOR) -->
+          
             <div class="mb-3" *ngIf="itemForm.get('role')?.value === 'DOCTOR'">
               <label for="specialty" class="form-label"><span style="color: red;">*</span> Specialty</label>
               <input type="text" class="form-control" [ngClass]="{'is-invalid': f['specialty'].invalid && f['specialty'].touched}" id="specialty" formControlName="specialty">
@@ -58,7 +58,7 @@
               </div>
             </div>
 
-            <!-- Availability (Visible only for DOCTOR) -->
+           
             <div class="mb-3" *ngIf="itemForm.get('role')?.value === 'DOCTOR'">
               <label for="availability" class="form-label"><span style="color: red;">*</span> Availability</label>
               <select type="text" class="form-control" [ngClass]="{'is-invalid': f['availability'].invalid && f['availability'].touched}" id="availability" formControlName="availability">
@@ -71,20 +71,19 @@
               </div>
             </div>
 
-            <!-- Submit Button -->
             <button type="submit" class="btn btn-dark w-100 mb-3" [disabled] = "!itemForm.valid">Submit</button>
 
-            <!-- Navigation Link -->
+          
             <div class="text-center">
               <a routerLink = "/login">Go to Login</a>
             </div>
 
-            <!-- Success Message -->
+           
             <div *ngIf = "successMessage" class ="alert alert-success mt-3">
               {{ successMessage }}
             </div>
 
-            <!-- Error Message -->
+            
             <div *ngIf = "errorMessage" class="alert alert-danger mt-3">
               {{ errorMessage }}
             </div>
@@ -92,8 +91,9 @@
 
 
         </div>
- <!-- Right Side: Image Only -->
- <div class="col-md-6 p-0" style = "background: url('assets/login.png') center/cover no-repeat; height: 80vh;"></div>
+
+ <div class="col-md-6 p-0" style = "background: url('assets/login.png') center/cover no-repeat; height: 100vh;"></div>
 
       </div>
     </div>
+ 

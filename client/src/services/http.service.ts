@@ -5,6 +5,7 @@ import { AuthService } from './auth.service';
 import { environment } from '../environments/environment.development';
 import { Doctor } from '../types/Doctor';
 import { MedicalRecord } from '../types/MedicalRecord';
+import { Patient } from '../types/Patient';
 
 @Injectable({
   providedIn: 'root',
@@ -32,50 +33,45 @@ export class HttpService {
       details);
   }
 
-  getDoctors(): Observable<Doctor[]> {
-    return this.http.get<Doctor[]>(`${this.serverName}/api/patient/doctors`);
+  fetchAvailableDoctorsByPatient(): Observable<Doctor[]> {
+    return this.http.get<Doctor[]>(`${this.serverName}/api/patient/available`);
   }
 
-  getDoctorsForReceptionist(): Observable<any> {
-    return this.http.get(`${this.serverName}/api/receptionist/doctors`);
+  fetchAvailableDoctorsByReceptionist(): Observable<Doctor[]> {
+    return this.http.get<Doctor[]>(`${this.serverName}/api/receptionist/available`);
   }
 
-  ScheduleAppointment(details: any): Observable<any> {
+  fetchAllPatients(): Observable<Patient[]>
+  {
+    return this.http.get<Patient[]>(`${this.serverName}/api/receptionist`);
+  }
+
+  scheduleAppointment(details: any): Observable<any> {
     const { patientId, doctorId,appointmentDate, time } = details;
     const combinedDateTime:string=`${appointmentDate} ${time}:00`;
     const timeDto={time: combinedDateTime};
     return this.http.post(
-      `${this.serverName}/api/patient/appointment?patientId=${patientId}&doctorId=${doctorId}`,
-      timeDto);
+      `${this.serverName}/api/appointment?patientId=${patientId}&doctorId=${doctorId}`, timeDto);
   }
 
-  ScheduleAppointmentByReceptionist(details: any): Observable<any> {
-    const { patientId, doctorId,appointmentDate, time } = details;
-    const combinedDateTime:string=`${appointmentDate} ${time}:00`;
-    const timeDto={time: combinedDateTime};
-    return this.http.post(
-      `${this.serverName}/api/receptionist/appointment?patientId=${patientId}&doctorId=${doctorId}`,
-      timeDto);
-  }
 
   reScheduleAppointment(appointmentId: number, timeDto: {time: string}): Observable<any> {
     return this.http.put(
-      `${this.serverName}/api/receptionist/appointment-reschedule/${appointmentId}`,
-      timeDto);
+      `${this.serverName}/api/appointment?appointmentId=${appointmentId}`, timeDto);
   }
 
-  getAllAppointments(): Observable<any> {
-    return this.http.get(`${this.serverName}/api/receptionist/appointments`);
+  fetchAllAppointments(): Observable<any> {
+    return this.http.get(`${this.serverName}/api/appointment`);
   }
 
-  getAppointmentByDoctor(doctorId: number): Observable<any> {
+  fetchAppointmentsByDoctorId(doctorId: number): Observable<any> {
     return this.http.get(
-      `${this.serverName}/api/doctor/appointments?doctorId=${doctorId}`);
+      `${this.serverName}/api/appointment/doctor?doctorId=${doctorId}`);
   }
 
-  getAppointmentByPatient(patientId: number): Observable<any> {
+  fetchAppointmentsByPatientId(patientId: number): Observable<any> {
     return this.http.get(
-      `${this.serverName}/api/patient/appointments?patientId=${patientId}`);
+      `${this.serverName}/api/appointment/patient?patientId=${patientId}`);
   }
 
   updateDoctorAvailability(doctorId: number, availability: string): Observable<any> {
@@ -89,21 +85,21 @@ export class HttpService {
 
   createMedicalRecord(patientId: number, doctorId: number, appointmentId: number, medicalrecord: any)
   {
-    return this.http.post<any>(`${this.serverName}/api/doctor/medicalrecords/${patientId}/${doctorId}/${appointmentId}`, medicalrecord);
+    return this.http.post<any>(`${this.serverName}/api/medicalRecord?patientId=${patientId}&doctorId=${doctorId}&appointmentId=${appointmentId}`, medicalrecord);
   }
 
-  viewMedicalRecordById(medicalRecordId: number)
+  fetchMedicalRecordById(medicalRecordId: number)
   {
-    return this.http.get<any>(`${this.serverName}/api/doctor/medicalrecords?medicalRecordId=${medicalRecordId}`);
+    return this.http.get<any>(`${this.serverName}/api/medicalRecord/${medicalRecordId}`);
   }
 
-  viewMedicalRecordByPatientIdDoctorId(patientId: number, doctorId: number)
+  isMedicalRecordExsists(patientId: number, doctorId: number)
   {
-    return this.http.get<MedicalRecord>(`${this.serverName}/api/doctor/medicalrecords/${patientId}/${doctorId}`);
+    return this.http.get<MedicalRecord>(`${this.serverName}/api/medicalRecord/patientAndDoctor?patientId=${patientId}&doctorId=${doctorId}`);
   }
 
   updateMedicalRecord(medicalRecordId: number, medicalRecord: MedicalRecord)
   {
-    return this.http.put<MedicalRecord>(`${this.serverName}/api/doctor/medicalrecords/${medicalRecordId}`, medicalRecord);
+    return this.http.put<MedicalRecord>(`${this.serverName}/api/medicalRecord?medicalRecordId=${medicalRecordId}`, medicalRecord);
   }
 }

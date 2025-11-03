@@ -1,0 +1,61 @@
+
+:host {
+  --primary-color: #115f73;
+  --primary-dark: #0e4a5a;
+  --primary-light-hover: rgba(22, 118, 142, 0.1);
+  --text-color: #ffffff;
+  --border-radius: 8px;
+  --border-color: #dee2e6;
+  --table-header-bg: #f8f9fa;
+}
+ 
+.component-card {
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+ 
+.card-header-custom {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  border-bottom: none;
+  padding: 1rem 1.25rem;
+}
+ 
+.card-header-custom h4 {
+  font-weight: 600;
+}
+ 
+.btn-light {
+  border-radius: 6px;
+}
+ 
+dl.row {
+  font-size: 0.95rem;
+}
+dl.row dt {
+  color: #555;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+dl.row dd {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+ 
+.form-card {
+  max-width: 700px;
+}
+ 
+.record-data-block {
+  background-color: var(--table-header-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  font-family: inherit;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin-bottom: 0;
+  font-size: 0.95rem;
+}
+ 

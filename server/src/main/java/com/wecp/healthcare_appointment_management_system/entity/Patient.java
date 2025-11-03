@@ -14,9 +14,10 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "patient")
+@Table(name = "patients")
 public class Patient extends User 
-{   // implement patient entity
+{   
+
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<Appointment> appointments = new HashSet<>();

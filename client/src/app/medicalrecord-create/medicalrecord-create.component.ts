@@ -28,7 +28,6 @@ medicalRecordForm!: FormGroup;
   ) {}
 
   ngOnInit(): void {
-    // Get route parameters
     this.patientId = Number(this.route.snapshot.paramMap.get('patientId'));
     this.doctorId = Number(this.route.snapshot.paramMap.get('doctorId'));
     this.appointmentId = Number(this.route.snapshot.paramMap.get('appointmentId'));
@@ -37,7 +36,6 @@ medicalRecordForm!: FormGroup;
     this.today = now.toISOString().slice(0, 16);
     console.log(this.today);
 
-    // Initialize form
     this.medicalRecordForm = this.fb.group({
       doctorId: [this.doctorId],
       patientId: [this.patientId],
@@ -55,9 +53,6 @@ medicalRecordForm!: FormGroup;
 
     if (this.medicalRecordForm.valid) {
       const medicalRecordData = {
-        // patientId: this.patientId,
-        // doctorId: this.doctorId,
-        // appointmentId: this.appointmentId,
         ...this.medicalRecordForm.value
       };
 

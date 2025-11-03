@@ -29,6 +29,9 @@ export class ScheduleAppointmentComponent implements OnInit {
 
   ngOnInit(): void 
   {
+    console.log('Current Timezone:', Intl.DateTimeFormat().resolvedOptions().timeZone);
+console.log('Current Offset (minutes):', new Date().getTimezoneOffset());
+console.log('Current Date:', new Date());
     this.patient = Number(localStorage.getItem('user_id'));
     const now = new Date();
     this.today = now.toISOString().split('T')[0]; // yyyy-MM-dd
@@ -46,7 +49,7 @@ export class ScheduleAppointmentComponent implements OnInit {
   }
 
   loadDoctors(): void {
-    this.httpService.getDoctors().pipe(
+    this.httpService.fetchAvailableDoctorsByPatient().pipe(
       map((doctors: Doctor[]) => doctors.filter(d => d.availability?.toLowerCase() === 'yes')),
       catchError((error: HttpErrorResponse) => {
         this.handleError(error);
@@ -66,7 +69,7 @@ export class ScheduleAppointmentComponent implements OnInit {
 
     if (this.itemForm.valid)
       {
-      this.httpService.ScheduleAppointment(this.itemForm.value).subscribe({
+      this.httpService.scheduleAppointment(this.itemForm.value).subscribe({
         next: (response: any) => {
           this.successMessage = 'Appointment scheduled successfully!';
           this.errorMessage = null;
@@ -94,7 +97,7 @@ export class ScheduleAppointmentComponent implements OnInit {
 
     if(date && time)
     {
-      const selectedDateTime = new Date(`${date}T${time}`);
+      const selectedDateTime = new Date(`${date}T${time}:00`);
       if(selectedDateTime < new Date())
       {
         return {pastDateTime: true};

@@ -29,15 +29,16 @@ export class MedicalRecordEditComponent
     private router: Router
   ) {}
 
-  ngOnInit(): void {
-    // Get route parameters
+  ngOnInit(): void 
+  {
+    
     this.medicalRecordId = Number(this.route.snapshot.paramMap.get('medicalRecordId'));
     this.patientId = Number(this.route.snapshot.paramMap.get('patientId'));
     this.doctorId = Number(this.route.snapshot.paramMap.get('doctorId'));
     this.appointmentId = Number(this.route.snapshot.paramMap.get('appointmentId'));
     const now = new Date();
     this.today = now.toISOString().slice(0, 16);
-    // Initialize form
+    
     this.medicalRecordEditForm = this.fb.group({
       doctorId: [this.doctorId],
       patientId: [this.patientId],
@@ -78,7 +79,7 @@ export class MedicalRecordEditComponent
 
   loadMedicalRecord()
   {
-    this.httpService.viewMedicalRecordById(this.medicalRecordId).subscribe({
+    this.httpService.fetchMedicalRecordById(this.medicalRecordId).subscribe({
       next: (data) => {
         this.medicalRecord = data;
         console.log(this.medicalRecord);

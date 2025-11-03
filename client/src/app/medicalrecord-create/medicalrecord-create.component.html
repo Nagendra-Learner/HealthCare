@@ -1,62 +1,90 @@
 
-<div class="container mt-4">
-  <h3 class="mb-3">Add Medical Record</h3>
-  <form (ngSubmit) = "onSubmit()" [formGroup] = "medicalRecordForm">
-
-    <!-- Patient ID -->
-    <div class="mb-3">
-      <label for="patientId" class="form-label"><span style="color:red">* </span>Patient ID</label>
-      <input type="number" id="patientId" class="form-control" formControlName="patientId" readonly>
+<app-dashbaord></app-dashbaord>
+ 
+<div class="container my-4">
+ 
+  <div class="card shadow-sm border-0 component-card form-card mx-auto">
+    
+    <div class="card-header card-header-custom">
+      <h4 class="mb-0 d-flex align-items-center">
+        <i class="bi bi-file-earmark-medical me-2"></i>
+        Add Medical Record
+      </h4>
     </div>
-
-    <!-- Doctor ID -->
-    <div class="mb-3">
-      <label for="doctorId" class="form-label"><span style="color:red">* </span>Doctor ID</label>
-      <input type="number" id="doctorId" class="form-control" formControlName="doctorId" readonly>
+ 
+    <div class="card-body p-4">
+      
+      <form (ngSubmit)="onSubmit()" [formGroup]="medicalRecordForm">
+ 
+        <div class="row">
+          <div class="col-md-4">
+            <div class="mb-3">
+              <label for="patientId" class="form-label fw-semibold">Patient ID</label>
+              <input type="number" id="patientId" class="form-control" formControlName="patientId" readonly>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="mb-3">
+              <label for="doctorId" class="form-label fw-semibold">Doctor ID</label>
+              <input type="number" id="doctorId" class="form-control" formControlName="doctorId" readonly>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="mb-3">
+              <label for="appointmentId" class="form-label fw-semibold">Appt. ID</label>
+              <input type="number" id="appointmentId" class="form-control" formControlName="appointmentId" readonly>
+            </div>
+          </div>
+        </div>
+        
+        <hr class="my-2"> <div class="mb-3">
+          <label for="diagnosis" class="form-label fw-semibold">Diagnosis</label>
+          <input 
+            type="text" 
+            id="diagnosis" 
+            class="form-control" 
+            formControlName="diagnosis" 
+            placeholder="Enter diagnosis"
+            [ngClass]="{'is-invalid' : f['diagnosis'].invalid && f['diagnosis'].touched}">
+          <div class="invalid-feedback" *ngIf="f['diagnosis']?.touched && f['diagnosis']?.invalid">
+            <small *ngIf="f['diagnosis']?.errors?.['required']">Diagnosis is required.</small>
+          </div>
+        </div>
+ 
+        <div class="mb-3">
+          <label for="prescription" class="form-label fw-semibold">Prescription</label>
+          <textarea id="prescription" class="form-control" formControlName="prescription" rows="2" placeholder="Enter prescription"></textarea>
+        </div>
+ 
+        <div class="mb-3">
+          <label for="notes" class="form-label fw-semibold">Notes</label>
+          <textarea id="notes" class="form-control" formControlName="notes" rows="3" placeholder="Additional notes"></textarea>
+        </div>
+ 
+        <div class="mb-3">
+          <label for="recordDate" class="form-label fw-semibold">Record Date</label>
+          <input type="datetime-local" id="recordDate" class="form-control" formControlName="recordDate" [min]="today" [max]="today" readonly>
+        </div>
+ 
+        <button type="submit" class="btn btn-primary w-100 btn-lg mt-3" [disabled]="medicalRecordForm.invalid">
+          <i class="bi bi-save-fill me-2"></i>
+          Save Record
+        </button>
+ 
+        <div *ngIf="successMessage" class="alert alert-success d-flex align-items-center mt-3">
+          <i class="bi bi-check-circle-fill me-2"></i>
+          <div>{{ successMessage }}</div>
+        </div>
+        <div *ngIf="errorMessage" class="alert alert-danger d-flex align-items-center mt-3">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i>
+          <div>{{ errorMessage }}</div>
+        </div>
+ 
+      </form>
+   <div class="text-center">
+    <a routerLink = "/dashboard">Go To dashboard</a>
+  </div>
     </div>
-
-    <!-- Appointment ID -->
-    <div class="mb-3">
-      <label for="appointmentId" class="form-label"><span style="color:red">* </span>Appointment ID</label>
-      <input type="number" id="appointmentId" class="form-control" formControlName="appointmentId" readonly>
-    </div>
-
-    <!-- Diagnosis -->
-    <div class="mb-3">
-      <label for="diagnosis" class="form-label"><span style="color:red">* </span> Diagnosis</label>
-      <input type="text" id="diagnosis" class="form-control" formControlName="diagnosis" placeholder="Enter diagnosis">
-      <div class="text-danger mt-1" *ngIf = "f['diagnosis']?.touched && f['diagnosis']?.invalid">
-        <small *ngIf = "f['diagnosis']?.errors?.['required']">Diagnosis is required.</small>
-      </div>
-    </div>
-
-    <!-- Prescription -->
-    <div class="mb-3">
-      <label for="prescription" class="form-label">Prescription</label>
-      <textarea id="prescription" class="form-control" formControlName="prescription" rows="2" placeholder="Enter prescription"></textarea>
-    </div>
-
-    <!-- Notes -->
-    <div class="mb-3">
-      <label for="notes" class="form-label">Notes</label>
-      <textarea id="notes" class="form-control" formControlName="notes" rows="3" placeholder="Additional notes"></textarea>
-    </div>
-
-    <!-- Record Date -->
-    <div class="mb-3">
-      <label for="recordDate" class = "form-label"><span style="color:red">* </span> Record Date</label>
-      <input type = "datetime-local" id = "recordDate" class = "form-control" formControlName = "recordDate" [min] = "today" [max] = "today" readonly>
-    </div>
-
-    <!-- Submit Button -->
-    <button type="submit" class="btn btn-primary w-100" [disabled] = "medicalRecordForm.invalid">Save Record</button>
-
-    <!-- Success & Error Messages -->
-    <div *ngIf="successMessage" class="alert alert-success mt-3 text-center">
-      {{ successMessage }}
-    </div>
-    <div *ngIf="errorMessage" class="alert alert-danger mt-3 text-center">
-      {{ errorMessage }}
-    </div>
-  </form>
+  </div>
 </div>
+ 
