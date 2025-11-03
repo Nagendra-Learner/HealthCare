@@ -44,6 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 // Publicly accessible endpoints
                 .antMatchers("/api/user/login", "/api/patient/register", "/api/doctor/register", "/api/receptionist/register").permitAll()
+                .antMatchers("/api/user/forget-password").permitAll()
 
                 // Role-based access control
                 .antMatchers("/api/doctor/**").hasAuthority("DOCTOR")

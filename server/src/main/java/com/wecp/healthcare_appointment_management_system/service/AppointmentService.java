@@ -126,4 +126,19 @@ public class AppointmentService
         return appointmentRepository.save(appointment);
     }
 
+    public Appointment completedAppointment(Long appointmentId)
+    {
+        Appointment appointment = appointmentRepository.findById(appointmentId).orElse(null);
+
+        if (appointment == null) 
+        {
+            throw new EntityNotFoundException("Appointment with ID: " + appointmentId + " not found.");
+        }
+
+        appointment.setStatus(AppointmentStatus.COMPLETED.name());
+
+        return appointmentRepository.save(appointment);
+    }
+
+
 }

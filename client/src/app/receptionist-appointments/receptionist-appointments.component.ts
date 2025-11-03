@@ -20,7 +20,7 @@ export class ReceptionistAppointmentsComponent implements OnInit
   selectedAppointment: any;
   showAppointment: boolean=false;
   errorMessage:string|null=null;
-
+  successMessage: string | null = null;
   filteredAppointments: Appointment[] = [];
   doctorFilter: string = '';
   patientFilter: string = '';
@@ -158,7 +158,25 @@ export class ReceptionistAppointmentsComponent implements OnInit
     }
   }
 
+  markAsCompleted(appointment: Appointment) {
+  if (confirm(`Mark appointment #${appointment.id} as completed?`)) {
+    this.http.completedAppointment(appointment.id).subscribe({
+      next: () => {
+        this.successMessage = "Appointment marked as completed.";
+        this.errorMessage = null;
+        setTimeout(() => {
+          this.loadAppointments();
+          this.successMessage = null; // Clear after showing
+        }, 2000);
 
+      },
+      error: () => {
+        this.successMessage = null;
+        this.errorMessage = "Failed to mark appointment as completed.";
+      }
+    });
+  }
+}
 
   futureDateValidator(control: AbstractControl): ValidationErrors | null {
   if (!control.value) return null;

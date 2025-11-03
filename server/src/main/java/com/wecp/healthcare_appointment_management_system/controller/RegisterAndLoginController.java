@@ -9,6 +9,10 @@ import com.wecp.healthcare_appointment_management_system.entity.User;
 import com.wecp.healthcare_appointment_management_system.jwt.JwtUtil;
 import com.wecp.healthcare_appointment_management_system.repository.UserRepository;
 import com.wecp.healthcare_appointment_management_system.service.UserService;
+
+import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +20,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +43,9 @@ public class RegisterAndLoginController
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @PostMapping("/patient/register")
     public ResponseEntity<Patient> registerPatient(@RequestBody Patient patient)
@@ -81,6 +89,28 @@ public class RegisterAndLoginController
         return ResponseEntity.ok(new LoginResponse(jwt, user.getRole(), user.getId()));
         
     }
+
+    @PostMapping("/user/forget-password")
+    public ResponseEntity<?> forgetPassword(@RequestBody Map<String, String> request) 
+    {
+        
+    String username = request.get("username");
+    String oldPassword = request.get("oldPassword");
+    String newPassword = request.get("newPassword");
+
+    Optional<User> userOpt = userRepository.findByEmail(username);
+    if (userOpt.isPresent()) {
+        User user = userOpt.get();
+        if (passwordEncoder.matches(oldPassword, user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(user);
+            return ResponseEntity.ok(Map.of("message", "Password updated successfully"));
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "Old password is incorrect"));
+        }
+    }
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "User not found"));
+}
 
     
 }

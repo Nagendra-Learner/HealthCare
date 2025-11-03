@@ -74,5 +74,11 @@ public class AppointmentController
         return new ResponseEntity<List<Appointment>>(appointments,HttpStatus.OK);
     }
 
+    @PutMapping("/completed")
+    public Appointment completedAppointment(@RequestParam Long appointmentId)
+    {
+        return this.appointmentService.completedAppointment(appointmentId);
+    }
+
 
 }

@@ -33,6 +33,11 @@ export class HttpService {
       details);
   }
 
+  forgotPassword(data: { username: string | null, oldPassword: string, newPassword: string }) {
+  return this.http.post<{ message: string }>(`${this.serverName}/api/user/forget-password`, data);
+}
+
+
   fetchAvailableDoctorsByPatient(): Observable<Doctor[]> {
     return this.http.get<Doctor[]>(`${this.serverName}/api/patient/available`);
   }
@@ -58,6 +63,11 @@ export class HttpService {
   reScheduleAppointment(appointmentId: number, timeDto: {time: string}): Observable<any> {
     return this.http.put(
       `${this.serverName}/api/appointment?appointmentId=${appointmentId}`, timeDto);
+  }
+
+  completedAppointment(appointmentId: number): Observable<any> {
+    return this.http.put(
+      `${this.serverName}/api/appointment/completed?appointmentId=${appointmentId}`, {});
   }
 
   fetchAllAppointments(): Observable<any> {

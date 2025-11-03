@@ -49,6 +49,7 @@
               <th scope="col" (click)="sortData('status')">Status <span *ngIf="sortDirections['status']">{{ sortDirections['status'] === 'asc' ? '↑' : '↓' }}</span></th>
               <th scope="col" (click)="sortData('doctor.username') ">Doctor <span *ngIf="sortDirections['doctor.username']">{{ sortDirections['doctor.username'] === 'asc' ? '↑' : '↓' }}</span></th>
               <th scope="col" (click)="sortData('patient.username')">Patient <span *ngIf="sortDirections['patient.username']">{{ sortDirections['patient.username'] === 'asc' ? '↑' : '↓' }}</span></th>
+              <th scope="col" class="text-center">Reschedule</th>
               <th scope="col" class="text-center">Action</th>
             </tr>
           </thead>
@@ -75,6 +76,16 @@
                   Reschedule
                 </button>
               </td>
+
+              <td class="text-center">
+                <button
+                  class="btn btn-outline-success btn-sm d-flex align-items-center gap-1 mx-auto" 
+                  (click)="markAsCompleted(appointment)" [disabled] = "appointment.status === 'COMPLETED'">
+                  <i class="bi bi-check-circle"></i>
+                  Complete
+                </button>
+              </td>
+
             </tr>
           </tbody>
         </table>
@@ -137,8 +148,16 @@
           Submit
         </button>
       </form>
+
     </div>
   </div>
+
+  <div *ngIf = "successMessage" class="alert alert-success mt-3">
+        {{ successMessage }}
+      </div>
+      <div *ngIf = "errorMessage" class="alert alert-danger mt-3">
+        {{ errorMessage }}
+      </div>
  
 </div>
  
