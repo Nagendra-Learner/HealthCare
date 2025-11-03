@@ -33,10 +33,9 @@ export class HttpService {
       details);
   }
 
-  forgotPassword(data: { username: string | null, oldPassword: string, newPassword: string }) {
-  return this.http.post<{ message: string }>(`${this.serverName}/api/user/forget-password`, data);
+  changePassword(data: { email: string | null, oldPassword: string, newPassword: string }) {
+  return this.http.post<{ message: string }>(`${this.serverName}/api/user/change-password`, data);
 }
-
 
   fetchAvailableDoctorsByPatient(): Observable<Doctor[]> {
     return this.http.get<Doctor[]>(`${this.serverName}/api/patient/available`);

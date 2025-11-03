@@ -90,15 +90,15 @@ public class RegisterAndLoginController
         
     }
 
-    @PostMapping("/user/forget-password")
-    public ResponseEntity<?> forgetPassword(@RequestBody Map<String, String> request) 
+    @PostMapping("/user/change-password")
+    public ResponseEntity<?> changePassword(@RequestBody Map<String, String> request) 
     {
         
-    String username = request.get("username");
+    String email = request.get("email");
     String oldPassword = request.get("oldPassword");
     String newPassword = request.get("newPassword");
 
-    Optional<User> userOpt = userRepository.findByEmail(username);
+    Optional<User> userOpt = userRepository.findByEmail(email);
     if (userOpt.isPresent()) {
         User user = userOpt.get();
         if (passwordEncoder.matches(oldPassword, user.getPassword())) {

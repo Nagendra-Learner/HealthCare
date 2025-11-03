@@ -13,7 +13,7 @@ import { ReceptionistScheduleAppointmentsComponent } from './receptionist-schedu
 import { MedicalRecordCreateComponent } from './medicalrecord-create/medicalrecord-create.component';
 import { MedicalRecordEditComponent } from './medicalrecord-edit/medicalrecord-edit.component';
 import { MedicalRecordViewComponent } from './medicalrecord-view/medicalrecord-view.component';
-import { ForgotPasswordComponent } from './forget-password/forget-password.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -28,7 +28,7 @@ const routes: Routes = [
   {path: 'medicalRecords/create/:patientId/:doctorId/:appointmentId', component: MedicalRecordCreateComponent},
   {path: 'medicalRecords/edit/:medicalRecordId/:patientId/:doctorId/:appointmentId', component: MedicalRecordEditComponent},
   {path: 'medicalRecords/view/:medicalRecordId', component: MedicalRecordViewComponent},
-  {path: 'forgot-password',component: ForgotPasswordComponent},
+  {path: 'change-password', component: ChangePasswordComponent},
 
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login', pathMatch: 'full' },

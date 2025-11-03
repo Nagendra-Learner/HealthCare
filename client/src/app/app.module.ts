@@ -20,9 +20,9 @@ import { ReceptionistScheduleAppointmentsComponent } from './receptionist-schedu
 import { MedicalRecordCreateComponent } from './medicalrecord-create/medicalrecord-create.component';
 import { MedicalRecordEditComponent } from './medicalrecord-edit/medicalrecord-edit.component';
 import { MedicalRecordViewComponent } from './medicalrecord-view/medicalrecord-view.component';
-import { ForgotPasswordComponent } from './forget-password/forget-password.component';
 import { HttpInterceptor } from '@angular/common/http';
 import { AuthInterceptor } from '../auth.interceptors';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 
 
@@ -41,7 +41,7 @@ import { AuthInterceptor } from '../auth.interceptors';
     MedicalRecordCreateComponent,
     MedicalRecordEditComponent,
     MedicalRecordViewComponent,
-    ForgotPasswordComponent,
+    ChangePasswordComponent,
   ],
   imports: [
     BrowserModule,

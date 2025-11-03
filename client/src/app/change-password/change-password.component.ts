@@ -5,12 +5,12 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-forgot-password',
-  templateUrl: './forget-password.component.html',
-  styleUrls: ['./forget-password.component.scss']
+  selector: 'app-change-password',
+  templateUrl: './change-password.component.html',
+  styleUrls: ['./change-password.component.scss']
 })
 
-export class ForgotPasswordComponent
+export class ChangePasswordComponent
 {
     errorMessage : string | null = null;
     changeForm!: FormGroup;
@@ -21,7 +21,7 @@ export class ForgotPasswordComponent
 
   ngOnInit(): void {
    this.changeForm = this.fb.group({
-  username: ['', [Validators.required, Validators.email]],
+  email: ['', [Validators.required, Validators.email]],
   oldPassword: ['', [Validators.required]],
   newPassword: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)]],
   confirmPassword: ['', [Validators.required]]
@@ -36,20 +36,21 @@ export class ForgotPasswordComponent
   {
     if(this.changeForm.valid)
     {
-        const { username, oldPassword, newPassword, confirmPassword } = this.changeForm.value;
+        const { email, oldPassword, newPassword, confirmPassword } = this.changeForm.value;
         if (newPassword !== confirmPassword) {
         this.passwordMismatch = true;
         return;
         }
         this.passwordMismatch = false;
 
-        this.httpService.forgotPassword({ username, oldPassword, newPassword }).subscribe({
+        this.httpService.changePassword({ email, oldPassword, newPassword }).subscribe({
         next: (res) => {
             this.message = res.message;
             setTimeout(() => {this.message = null; this.changeForm.reset(); this.router.navigate(['/login']);}, 2000)
         },
         error: (err: HttpErrorResponse) => {
             this.errorMessage = err.error?.message || 'Something went wrong';
+            setTimeout(() => {this.errorMessage = null}, 2000);
         }
         });
     }
