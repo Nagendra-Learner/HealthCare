@@ -21,9 +21,11 @@ public class LoginResponse {
 
     @JsonCreator
     public LoginResponse(@JsonProperty("token") String token,
+                        @JsonProperty("username") String username,
                          @JsonProperty("role") String role,
                          @JsonProperty("userId") Long userId) {
         this.token = token;
+        this.username = username;
         this.role = role;
         this.userId = userId;
     }

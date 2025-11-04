@@ -86,7 +86,7 @@ public class RegisterAndLoginController
 
         User user = userRepository.findByUsername(userDetails.getUsername()).get();
         
-        return ResponseEntity.ok(new LoginResponse(jwt, user.getRole(), user.getId()));
+        return ResponseEntity.ok(new LoginResponse(jwt, user.getUsername(),user.getRole(), user.getId()));
         
     }
 

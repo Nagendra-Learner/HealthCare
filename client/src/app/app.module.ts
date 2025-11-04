@@ -24,8 +24,6 @@ import { HttpInterceptor } from '@angular/common/http';
 import { AuthInterceptor } from '../auth.interceptors';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 
-
-
 @NgModule({
   declarations: [
     AppComponent,

@@ -14,7 +14,6 @@ import { MedicalRecordCreateComponent } from './medicalrecord-create/medicalreco
 import { MedicalRecordEditComponent } from './medicalrecord-edit/medicalrecord-edit.component';
 import { MedicalRecordViewComponent } from './medicalrecord-view/medicalrecord-view.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
-
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'registration', component: RegistrationComponent },

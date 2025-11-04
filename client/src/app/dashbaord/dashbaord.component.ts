@@ -11,6 +11,7 @@ export class DashbaordComponent
 {
   role!: string | null;
   showDashboardImage = true;
+  username = localStorage.getItem('username');
 
   constructor(private authService: AuthService, private router: Router) {
     this.router.events.subscribe(event => {
@@ -29,7 +30,8 @@ export class DashbaordComponent
 
     this.role = this.authService.getRole;
     console.log( " Role = " + this.role);
-
+    console.log(this.username);
+    
   }
 
   onLogout()
@@ -37,7 +39,5 @@ export class DashbaordComponent
     this.authService.logout();
     this.router.navigate(['/login']);
   }
-
-  
 
 }

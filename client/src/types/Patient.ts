@@ -9,6 +9,5 @@ export interface Patient
     email: string;
     role: string;
     appointments: Appointment;
-    medicalRecords: MedicalRecord;
-  
+    medicalRecords: MedicalRecord;  
 }

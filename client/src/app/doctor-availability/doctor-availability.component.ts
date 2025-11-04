@@ -16,8 +16,7 @@ export class DoctorAvailabilityComponent implements OnInit
   errorMessage: string | null  = null;
 
   constructor( private fb: FormBuilder, private httpService: HttpService, private authService: AuthService, private router: Router) 
-  {
-  }
+  {}
 
   ngOnInit()
   {

@@ -25,9 +25,8 @@ export class PatientAppointmentComponent implements OnInit {
   sortDirection: 'asc' | 'desc' = 'asc';
   filterDoctor: string = '';
   filterTime: string = '';
-  constructor(private router: Router, private httpService: HttpService, private datePipe: DatePipe) {
-  
-   }
+  constructor(private router: Router, private httpService: HttpService, private datePipe: DatePipe) 
+  {}
 
   ngOnInit(): void 
   {

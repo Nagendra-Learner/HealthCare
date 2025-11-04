@@ -10,5 +10,4 @@ export interface Appointment
     appointmentTime: Date;
     status: string;
     medicalRecord: MedicalRecord;
-
 }

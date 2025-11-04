@@ -9,14 +9,12 @@
   --table-header-bg: #f8f9fa;
 }
  
-/* Card Styling */
 .component-card {
   border-radius: var(--border-radius);
   overflow: hidden;
   border: 1px solid var(--border-color);
 }
  
-/* Card Header */
 .card-header-custom {
   background-color: var(--primary-color);
   color: var(--text-color);

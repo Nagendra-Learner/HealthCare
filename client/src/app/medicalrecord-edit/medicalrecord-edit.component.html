@@ -70,7 +70,8 @@
           Update Record
         </button>
  
-        <div *ngIf="successMessage" class="alert alert-success d-flex align-items-center mt-3">
+      </form>
+      <div *ngIf="successMessage" class="alert alert-success d-flex align-items-center mt-3">
           <i class="bi bi-check-circle-fill me-2"></i>
           <div>{{ successMessage }}</div>
         </div>
@@ -78,11 +79,6 @@
           <i class="bi bi-exclamation-triangle-fill me-2"></i>
           <div>{{ errorMessage }}</div>
         </div>
- 
-      </form>
-   <div class="text-center">
-    <a routerLink = "/dashboard">Go To dashboard</a>
-  </div>
     </div>
   </div>
 </div>

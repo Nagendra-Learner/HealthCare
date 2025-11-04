@@ -38,6 +38,7 @@ export class LoginComponent implements OnInit
           localStorage.setItem("token", response.token);
           localStorage.setItem("role", response.role);
           localStorage.setItem("user_id", response.userId);
+          localStorage.setItem("username", response.username);
           console.log(localStorage.getItem("role"));
           this.router.navigate(["/dashboard"]);
         },

@@ -31,6 +31,7 @@
               <input type="password" class="form-control" [ngClass]="{'is-invalid': f['password'].invalid && f['password'].touched}" id="password" formControlName="password">
               <div *ngIf="f['password']?.invalid && f['password']?.touched" class="invalid-feedback">
                 <small *ngIf="f['password']?.errors?.['required']">Password is required.</small>
+                <small *ngIf="f['newPassword']?.errors?.['minlength']">Minimum 8 characters.</small>
                 <small *ngIf="f['password']?.errors?.['pattern']">Password must contain at least one uppercase, one lowercase, one digit, one special character, and be at least 8 characters long.</small>
               </div>
             </div>
@@ -74,22 +75,17 @@
             <button type="submit" class="btn btn-dark w-100 mb-3" [disabled] = "!itemForm.valid">Submit</button>
 
           
-            <div class="text-center">
-              <a routerLink = "/login">Go to Login</a>
-            </div>
-
-           
+              <div class="text-center mt-3">
+            <a routerLink="/login" class="btn btn-outline-secondary btn-sm">Go to Login</a>
+          </div>
+          </form>
             <div *ngIf = "successMessage" class ="alert alert-success mt-3">
               {{ successMessage }}
             </div>
 
-            
             <div *ngIf = "errorMessage" class="alert alert-danger mt-3">
               {{ errorMessage }}
             </div>
-          </form>
-
-
         </div>
 
  <div class="col-md-6 p-0" style = "background: url('assets/login.png') center/cover no-repeat; height: 100vh;"></div>
