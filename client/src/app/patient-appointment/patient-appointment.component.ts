@@ -73,6 +73,7 @@ export class PatientAppointmentComponent implements OnInit {
       filtered = filtered.filter(app =>
         app.doctor.username.toLowerCase().startsWith(this.filterDoctor.toLowerCase())
       );
+      this.currentPage = 1;
     }
 
     if (this.filterTime.trim()) {
@@ -80,6 +81,7 @@ export class PatientAppointmentComponent implements OnInit {
         const formattedDate = this.datePipe.transform(app.appointmentTime, 'dd-MMM-yyyy hh:mm a');
         return formattedDate?.toLowerCase().startsWith(this.filterTime.toLowerCase());
       });
+      this.currentPage = 1;
     }
 
     if (this.sortColumn) {
@@ -113,7 +115,6 @@ export class PatientAppointmentComponent implements OnInit {
         return 0;
       });
     }
-
     return filtered;
   }
 

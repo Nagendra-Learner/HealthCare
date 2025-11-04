@@ -76,6 +76,7 @@ export class DoctorAppointmentComponent implements OnInit
       filtered = filtered.filter(app =>
         app.patient?.username?.toLowerCase().startsWith(this.searchTerm.toLowerCase())
       );
+      this.currentPage = 1;
     }
 
     filtered = filtered.sort((a, b) => {
